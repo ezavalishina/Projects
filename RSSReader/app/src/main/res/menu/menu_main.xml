@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--tools:context="ru.focus.zavalishina.rssreader.view.activities.MainActivity">-->
+    <item
+        android:id="@+id/menu_channels"
+        android:orderInCategory="1"
+        android:title="@string/menu_channels" />
+    <item
+        android:id="@+id/menu_favorite"
+        android:orderInCategory="2"
+        android:title="@string/menu_favorite" />
+    <item
+        android:id="@+id/menu_settings"
+        android:orderInCategory="3"
+        android:title="@string/menu_settings" />
+    <item
+        android:id="@+id/menu_about"
+        android:orderInCategory="4"
+        android:title="@string/menu_about" />
+</menu>
