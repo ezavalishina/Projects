@@ -1,6 +1,7 @@
 package ru.focus.zavalishina.rssreader.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import ru.focus.zavalishina.rssreader.R;
 import ru.focus.zavalishina.rssreader.model.ChannelInfo;
 import ru.focus.zavalishina.rssreader.model.ItemInfo;
+import ru.focus.zavalishina.rssreader.view.activities.NewsDescriptionActivity;
 
 public final class DataAdapter extends RecyclerView.Adapter {
     private ChannelInfo channelInfo;
@@ -50,10 +52,16 @@ public final class DataAdapter extends RecyclerView.Adapter {
             titleTextView = view.findViewById(R.id.title_text_view);
         }
 
-         private void bind(final ItemInfo itemInfo) {
+        private void bind(final ItemInfo itemInfo) {
             authorTextView.setText(itemInfo.getAuthor());
             dataTextView.setText(itemInfo.getPubDate());
             titleTextView.setText(itemInfo.getTitle());
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    NewsDescriptionActivity.startWithItemInfo(v.getContext(), itemInfo);                }
+            });
         }
     }
 }

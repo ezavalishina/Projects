@@ -58,4 +58,8 @@ public final class ChannelInfo implements Serializable {
     public ArrayList<ItemInfo> getItems() {
         return items;
     }
+
+    public void setItems(ArrayList<ItemInfo> items) {
+        this.items = items;
+    }
 }

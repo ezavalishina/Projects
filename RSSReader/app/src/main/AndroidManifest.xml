@@ -12,26 +12,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="ru.focus.zavalishina.rssreader.view.activities.MainActivity">
+        <activity android:name=".view.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="ru.focus.zavalishina.rssreader.view.activities.AddingChannelActivity" />
+        <activity android:name=".view.activities.AddingChannelActivity" />
         <activity
-            android:name="ru.focus.zavalishina.rssreader.view.activities.SettingsActivity"
+            android:name=".view.activities.SettingsActivity"
             android:label="@string/title_activity_settings" />
-        <activity android:name="ru.focus.zavalishina.rssreader.view.activities.AboutActivity" />
-        <activity android:name="ru.focus.zavalishina.rssreader.view.activities.ChannelsActivity" />
-        <activity android:name="ru.focus.zavalishina.rssreader.view.activities.FavoriteActivity" />
+        <activity android:name=".view.activities.AboutActivity" />
+        <activity android:name=".view.activities.ChannelsActivity" />
+        <activity android:name=".view.activities.FavoriteActivity" />
 
         <service
-            android:name="ru.focus.zavalishina.rssreader.view.NewsLoaderService"
-            android:exported="false"></service>
+            android:name=".view.NewsLoaderService"
+            android:exported="false" />
+
+        <activity android:name=".view.activities.NewsDescriptionActivity"></activity>
     </application>
-
-
 
 </manifest>

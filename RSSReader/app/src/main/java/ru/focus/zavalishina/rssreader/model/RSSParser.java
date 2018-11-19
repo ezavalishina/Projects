@@ -5,8 +5,8 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 
-public final class RSSParser {
-    public ChannelInfo parse(final XmlPullParser xmlPullParser) {
+final class RSSParser {
+    ChannelInfo parse(final XmlPullParser xmlPullParser) {
         final ChannelInfo channel = new ChannelInfo();
         String tagName = null;
         int currentEvent;
@@ -65,6 +65,7 @@ public final class RSSParser {
         final ItemInfo item = new ItemInfo();
         String tagName = null;
         int currentEvent;
+        DateUtil dateUtil = new DateUtil();
 
         try {
             currentEvent = xmlPullParser.getEventType();

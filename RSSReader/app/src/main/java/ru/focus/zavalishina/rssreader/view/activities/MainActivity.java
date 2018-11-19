@@ -68,6 +68,8 @@ public final class MainActivity extends AppCompatActivity {
         return intent;
     }
 
+
+
     public final void addChannel(View view) {
         EditText editText = findViewById(R.id.edit_message);
         String url = editText.getText().toString();
@@ -89,18 +91,18 @@ public final class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-            switch (requestCode) {
-                case MY_PERMISSIONS_REQUEST_INTERNET: {
-                    if (grantResults.length > 0
-                            && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                        addChannel(null);
-                    } else {
-                        Toast toast = Toast.makeText(getApplicationContext(),
-                                R.string.permission_message, Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_INTERNET: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    addChannel(null);
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            R.string.permission_message, Toast.LENGTH_SHORT);
+                    toast.show();
                 }
             }
+        }
     }
 
     public final boolean onCreateOptionsMenu(Menu menu) {
@@ -128,4 +130,3 @@ public final class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 }
-

@@ -3,10 +3,14 @@ package ru.focus.zavalishina.rssreader.view;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteConstraintException;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import ru.focus.zavalishina.rssreader.model.DataBaseHelper;
 import ru.focus.zavalishina.rssreader.view.activities.MainActivity;
 import ru.focus.zavalishina.rssreader.model.ChannelInfo;
 import ru.focus.zavalishina.rssreader.model.NewsLoader;
@@ -29,8 +33,25 @@ public final class NewsLoaderService extends IntentService {
         }
         final NewsLoader newsLoader = new NewsLoader();
         final ChannelInfo channelInfo = newsLoader.loadWithUrl(url);
-        final Intent newsIntent = MainActivity.createChannelInfoIntent(channelInfo);
-        sendBroadcast(newsIntent);
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
+        if (channelInfo != null) {
+            try {
+                dataBaseHelper.insertItems(channelInfo);
+            } catch (SQLiteConstraintException ignored) {
+
+            } catch (IOException ex) {
+                return;
+            }
+
+
+            if (dataBaseHelper.getChannelInfos() != null) {
+                if (dataBaseHelper.getChannelInfos().get(0) != null) {
+                    ChannelInfo channelInfo1 = dataBaseHelper.getChannelInfos().get(0);
+                    final Intent newsIntent = MainActivity.createChannelInfoIntent(channelInfo1);
+                    sendBroadcast(newsIntent);
+                }
+            }
+        }
     }
 
     public static Intent createIntent(final Context context, final String url) {
