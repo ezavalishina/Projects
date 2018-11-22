@@ -3,9 +3,12 @@ package ru.focus.zavalishina.rssreader.view.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import ru.focus.zavalishina.rssreader.R;
@@ -19,13 +22,21 @@ public class NewsDescriptionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_description_activity);
         ItemInfo itemInfo = getItemInfo(getIntent());
-        TextView textView = findViewById(R.id.description);
+        TextView description = findViewById(R.id.description);
+        TextView title = findViewById(R.id.title);
 
+        title.setText(itemInfo.getTitle());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            textView.setText(Html.fromHtml(itemInfo.getDescription(), Html.FROM_HTML_MODE_COMPACT));
+            description.setText(Html.fromHtml(itemInfo.getDescription(), Html.FROM_HTML_MODE_COMPACT));
         } else {
-            textView.setText(Html.fromHtml(itemInfo.getDescription()));
+            description.setText(Html.fromHtml(itemInfo.getDescription()));
         }
+
+        setTitle(R.string.news);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     public static void startWithItemInfo(Context context, ItemInfo itemInfo) {
@@ -36,5 +47,16 @@ public class NewsDescriptionActivity extends AppCompatActivity {
 
     static ItemInfo getItemInfo(Intent intent) {
         return (ItemInfo) intent.getSerializableExtra(ITEM_INFO_INTENT);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch(id){
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

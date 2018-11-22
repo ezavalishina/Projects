@@ -23,6 +23,7 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_CHANNEL_DESCRIPTION = "channel_description";
     private static final String COLUMN_CHANNEL_LAST_BUILD_DATE = "channel_last_build_date";
     private static final String COLUMN_CHANNEL_LANGUAGE = "channel_language";
+    private static final String COLUMN_CHANNEL_URL = "channel_url";
 
     private static final String ITEM_TABLE_NAME = "items";
     //private static final String COLUMN_ITEM_ID = "item_id";
@@ -43,6 +44,7 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
                 COLUMN_CHANNEL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_CHANNEL_TITLE + " TEXT, " +
                 COLUMN_CHANNEL_LINK + " TEXT, " +
+                COLUMN_CHANNEL_URL + " TEXT, " +
                 COLUMN_CHANNEL_DESCRIPTION + " TEXT, " +
                 COLUMN_CHANNEL_LAST_BUILD_DATE + " TEXT, " +
                 COLUMN_CHANNEL_LANGUAGE + " TEXT" +
@@ -116,8 +118,16 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void deleteChannel(ChannelInfo channelInfo) {
+        SQLiteDatabase database = getWritableDatabase();
+        final int channelID = getChannelID(channelInfo);
+        database.delete(CHANNEL_TABLE_NAME, COLUMN_CHANNEL_ID + "=" + channelID, null);
+        database.delete(ITEM_TABLE_NAME, COLUMN_ITEM_CHANNEL_ID + "=" + channelID, null);
+        database.close();
+    }
+
     public ArrayList<ChannelInfo> getChannelInfos() {
-        String[] columns = new String[]{COLUMN_CHANNEL_TITLE, COLUMN_CHANNEL_LINK, COLUMN_CHANNEL_DESCRIPTION,
+        String[] columns = new String[]{COLUMN_CHANNEL_TITLE, COLUMN_CHANNEL_URL, COLUMN_CHANNEL_LINK, COLUMN_CHANNEL_DESCRIPTION,
                 COLUMN_CHANNEL_LAST_BUILD_DATE, COLUMN_CHANNEL_LANGUAGE};
         SQLiteDatabase database = getReadableDatabase();
         Cursor cursor = database.query(CHANNEL_TABLE_NAME, columns, null, null,
@@ -130,7 +140,6 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
         ArrayList<ChannelInfo> channelList = new ArrayList<>();
 
         cursor.moveToNext();
-
         do {
             ChannelInfo channelInfo = new ChannelInfo();
             channelInfo.setTitle(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_TITLE)));
@@ -138,6 +147,7 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
             channelInfo.setDescription(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_DESCRIPTION)));
             channelInfo.setLastBuildDate(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_LAST_BUILD_DATE)));
             channelInfo.setLanguage(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_LANGUAGE)));
+            channelInfo.setUrl(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_URL)));
             channelInfo.setItems(getItemInfos(channelInfo));
 
             channelList.add(channelInfo);
@@ -205,6 +215,19 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
         return channelID;
     }
 
+    public boolean inDataBase(ChannelInfo channelInfo) {
+        SQLiteDatabase database = getReadableDatabase();
+        Cursor cursor = database.query(CHANNEL_TABLE_NAME, new String[]{COLUMN_CHANNEL_ID},
+                COLUMN_CHANNEL_LINK + " = ?", new String[]{channelInfo.getLink()},
+                null, null, null);
+
+        if (cursor.getCount() != 0) {
+            return true;
+        }
+
+        return false;
+    }
+
     private ContentValues getChannelContentValues(ChannelInfo channelInfo) {
         ContentValues channelContentValues = new ContentValues();
         channelContentValues.put(COLUMN_CHANNEL_TITLE, channelInfo.getTitle());
@@ -212,6 +235,7 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
         channelContentValues.put(COLUMN_CHANNEL_DESCRIPTION, channelInfo.getDescription());
         channelContentValues.put(COLUMN_CHANNEL_LAST_BUILD_DATE, channelInfo.getLastBuildDate());
         channelContentValues.put(COLUMN_CHANNEL_LANGUAGE, channelInfo.getLanguage());
+        channelContentValues.put(COLUMN_CHANNEL_URL, channelInfo.getUrl());
 
         return channelContentValues;
     }

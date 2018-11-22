@@ -3,12 +3,13 @@ package ru.focus.zavalishina.rssreader.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public final class ChannelInfo implements Serializable {
+public final class ChannelInfo implements java.io.Serializable {
     private String title = "";
     private String link = "";
     private String description = "";
     private String lastBuildDate = "";
     private String language = "";
+    private String url = "";
     private ArrayList<ItemInfo> items = new ArrayList<>();
 
     public String getTitle() {
@@ -29,6 +30,10 @@ public final class ChannelInfo implements Serializable {
 
     public String getLanguage() {
         return language;
+    }
+
+    public String getUrl() {
+        return url;
     }
 
     public void setTitle(final String title) {
@@ -61,5 +66,9 @@ public final class ChannelInfo implements Serializable {
 
     public void setItems(ArrayList<ItemInfo> items) {
         this.items = items;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

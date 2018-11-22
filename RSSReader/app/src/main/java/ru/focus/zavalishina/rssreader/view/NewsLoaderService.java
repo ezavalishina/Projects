@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
+import android.support.v4.content.LocalBroadcastManager;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -14,6 +15,7 @@ import ru.focus.zavalishina.rssreader.model.DataBaseHelper;
 import ru.focus.zavalishina.rssreader.view.activities.MainActivity;
 import ru.focus.zavalishina.rssreader.model.ChannelInfo;
 import ru.focus.zavalishina.rssreader.model.NewsLoader;
+import ru.focus.zavalishina.rssreader.view.activities.NewsListActivity;
 
 public final class NewsLoaderService extends IntentService {
 
@@ -33,26 +35,27 @@ public final class NewsLoaderService extends IntentService {
         }
         final NewsLoader newsLoader = new NewsLoader();
         final ChannelInfo channelInfo = newsLoader.loadWithUrl(url);
+        channelInfo.setUrl(urlString);
         DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
         if (channelInfo != null) {
+            boolean inDataBase = dataBaseHelper.inDataBase(channelInfo);
             try {
                 dataBaseHelper.insertItems(channelInfo);
-            } catch (SQLiteConstraintException ignored) {
-
             } catch (IOException ex) {
                 return;
             }
 
-
-            if (dataBaseHelper.getChannelInfos() != null) {
-                if (dataBaseHelper.getChannelInfos().get(0) != null) {
-                    ChannelInfo channelInfo1 = dataBaseHelper.getChannelInfos().get(0);
-                    final Intent newsIntent = MainActivity.createChannelInfoIntent(channelInfo1);
-                    sendBroadcast(newsIntent);
-                }
+            if (!inDataBase) {
+                final Intent newsIntent = MainActivity.createChannelInfoIntent(channelInfo);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(newsIntent);
+            } else {
+                final Intent newsIntent = NewsListActivity.createUpdateChannelInfoIntent(channelInfo);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(newsIntent);
             }
         }
     }
+
+
 
     public static Intent createIntent(final Context context, final String url) {
         final Intent intent = new Intent(context, NewsLoaderService.class);
@@ -62,8 +65,7 @@ public final class NewsLoaderService extends IntentService {
 
     private URL getUrl(final String urlString) {
         try {
-            final URL url = new URL(urlString);
-            return url;
+            return new URL(urlString);
         } catch (MalformedURLException ex) {
             return null;
         }
