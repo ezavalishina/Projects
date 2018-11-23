@@ -10,8 +10,10 @@ import android.support.v4.content.LocalBroadcastManager;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import ru.focus.zavalishina.rssreader.model.DataBaseHelper;
+import ru.focus.zavalishina.rssreader.model.ItemInfo;
 import ru.focus.zavalishina.rssreader.view.activities.MainActivity;
 import ru.focus.zavalishina.rssreader.model.ChannelInfo;
 import ru.focus.zavalishina.rssreader.model.NewsLoader;
@@ -49,6 +51,8 @@ public final class NewsLoaderService extends IntentService {
                 final Intent newsIntent = MainActivity.createChannelInfoIntent(channelInfo);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(newsIntent);
             } else {
+                ArrayList<ItemInfo> itemInfos = dataBaseHelper.getItemInfos(channelInfo);
+                channelInfo.setItems(itemInfos);
                 final Intent newsIntent = NewsListActivity.createUpdateChannelInfoIntent(channelInfo);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(newsIntent);
             }

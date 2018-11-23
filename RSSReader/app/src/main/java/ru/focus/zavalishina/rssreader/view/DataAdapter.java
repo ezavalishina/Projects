@@ -32,7 +32,7 @@ public final class DataAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, final int i) {
-        final ItemInfo item = channelInfo.getItems().get(i);
+        final ItemInfo item = channelInfo.getItems().get(channelInfo.getItems().size() - i - 1);
         final ViewHolder holder = (ViewHolder) viewHolder;
         holder.bind(item);
     }

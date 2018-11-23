@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
-import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -26,7 +25,7 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_CHANNEL_URL = "channel_url";
 
     private static final String ITEM_TABLE_NAME = "items";
-    //private static final String COLUMN_ITEM_ID = "item_id";
+    private static final String COLUMN_ITEM_ID = "item_id";
     private static final String COLUMN_ITEM_CHANNEL_ID = "item_channel_id";
     private static final String COLUMN_ITEM_TITLE = "item_title";
     private static final String COLUMN_ITEM_LINK = "item_link";
@@ -51,7 +50,8 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
                 ")");
 
         db.execSQL("CREATE TABLE " + ITEM_TABLE_NAME + "(" +
-                COLUMN_ITEM_TITLE + " TEXT PRIMARY KEY, " +
+                COLUMN_ITEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_ITEM_TITLE + " TEXT, " +
                 COLUMN_ITEM_LINK + " TEXT, " +
                 COLUMN_ITEM_DESCRIPTION + " TEXT, " +
                 COLUMN_ITEM_PUB_DATE + " TEXT, " +
@@ -70,7 +70,6 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
 
     public void insertItems(ChannelInfo channelInfo) throws IOException {
         try {
-            SQLiteDatabase database = getWritableDatabase();
             ArrayList<ItemInfo> items = channelInfo.getItems();
             ArrayList<ItemInfo> oldItems = getItemInfos(channelInfo);
             ArrayList<ItemInfo> forInsert = new ArrayList<>();
@@ -85,9 +84,9 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
                     if (forInsertIsComplete) {
                         break;
                     }
-                    Date insertItemDate = dateUtil.parseRfc822DateString(items.get(i).getPubDate());
+                    Date insertItemDate = dateUtil.parseDateString(items.get(i).getPubDate());
                     for (int j = 0; j < oldItems.size(); ) {
-                        Date dbItemDate = dateUtil.parseRfc822DateString(oldItems.get(j).getPubDate());
+                        Date dbItemDate = dateUtil.parseDateString(oldItems.get(j).getPubDate());
                         if (dbItemDate != null && insertItemDate != null) {
                             if (insertItemDate.after(dbItemDate)) {
                                 forInsert.add(items.get(i));
@@ -105,14 +104,16 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
                 }
             } else {
                 forInsert = items;
+                //Collections.reverse(forInsert);
             }
 
+            SQLiteDatabase database = getWritableDatabase();
             for (int i = 0; i < forInsert.size(); i++) {
                 database.insert(ITEM_TABLE_NAME, null,
                         getItemContentValues(forInsert.get(i), channelID));
             }
-
             database.close();
+
         } catch (SQLException ex) {
             throw new IOException();
         }
@@ -159,16 +160,16 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
         return channelList;
     }
 
-    private ArrayList<ItemInfo> getItemInfos(ChannelInfo channelInfo) {
+    public ArrayList<ItemInfo> getItemInfos(ChannelInfo channelInfo) {
         if (channelInfo == null) {
             return null;
         }
-        String[] columns = new String[]{COLUMN_ITEM_CHANNEL_ID, COLUMN_ITEM_AUTHOR,
+        String[] columns = new String[]{COLUMN_ITEM_CHANNEL_ID, COLUMN_ITEM_AUTHOR, COLUMN_ITEM_ID,
                 COLUMN_ITEM_PUB_DATE, COLUMN_ITEM_DESCRIPTION, COLUMN_ITEM_LINK, COLUMN_ITEM_TITLE};
         final int channelID = getChannelID(channelInfo);
         SQLiteDatabase database = getReadableDatabase();
         Cursor cursor = database.query(ITEM_TABLE_NAME, columns, COLUMN_ITEM_CHANNEL_ID + " = ?",
-                new String[]{String.valueOf(channelID)}, null, null, null);
+                new String[]{String.valueOf(channelID)}, null, null, COLUMN_ITEM_ID);
 
         if (cursor.getCount() == 0) {
             return null;
@@ -198,7 +199,7 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
     private int getChannelID(ChannelInfo channelInfo) {
         SQLiteDatabase database = getReadableDatabase();
         Cursor cursor = database.query(CHANNEL_TABLE_NAME, new String[]{COLUMN_CHANNEL_ID},
-                COLUMN_CHANNEL_LINK + " = ?", new String[]{channelInfo.getLink()},
+                COLUMN_CHANNEL_URL + " = ?", new String[]{channelInfo.getUrl()},
                 null, null, null);
         final int channelID;
 
@@ -218,7 +219,7 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
     public boolean inDataBase(ChannelInfo channelInfo) {
         SQLiteDatabase database = getReadableDatabase();
         Cursor cursor = database.query(CHANNEL_TABLE_NAME, new String[]{COLUMN_CHANNEL_ID},
-                COLUMN_CHANNEL_LINK + " = ?", new String[]{channelInfo.getLink()},
+                COLUMN_CHANNEL_URL + " = ?", new String[]{channelInfo.getUrl()},
                 null, null, null);
 
         if (cursor.getCount() != 0) {

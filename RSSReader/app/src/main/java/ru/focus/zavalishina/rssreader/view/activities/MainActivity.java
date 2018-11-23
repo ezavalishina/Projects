@@ -31,9 +31,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import ru.focus.zavalishina.rssreader.R;
 import ru.focus.zavalishina.rssreader.model.ChannelInfo;
+import ru.focus.zavalishina.rssreader.model.DateUtil;
 import ru.focus.zavalishina.rssreader.view.ChannelListAdapter;
 import ru.focus.zavalishina.rssreader.view.ChannelLoaderService;
 import ru.focus.zavalishina.rssreader.view.NewsLoaderService;
@@ -73,7 +75,13 @@ public final class MainActivity extends AppCompatActivity {
                 if (channelInfo == null) {
                     return;
                 }
-                channelInfos.add(channelInfo);
+                int channelIndex = findChannelInfoIndex(channelInfo, channelInfos);
+                if (channelIndex != -1) {
+                    channelInfos.remove(channelIndex);
+                    channelInfos.add(channelIndex, channelInfo);
+                } else {
+                    channelInfos.add(channelInfo);
+                }
                 recyclerView.setAdapter(new ChannelListAdapter(context, channelInfos));
             }
         };
@@ -136,7 +144,7 @@ public final class MainActivity extends AppCompatActivity {
 
     private int findChannelInfoIndex(ChannelInfo channelInfo, ArrayList<ChannelInfo> channelInfos) {
         for (int i = 0; i < channelInfos.size(); i++) {
-            if (channelInfos.get(i).getLink().equals(channelInfo.getLink())) {
+            if (channelInfos.get(i).getUrl().equals(channelInfo.getUrl())) {
                 return i;
             }
         }

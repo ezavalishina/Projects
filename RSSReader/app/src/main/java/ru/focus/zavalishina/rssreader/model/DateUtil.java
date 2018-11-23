@@ -3,23 +3,24 @@ package ru.focus.zavalishina.rssreader.model;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class DateUtil {
-
-    public static final SimpleDateFormat rfc822DateFormats[] = new SimpleDateFormat[] {
-            new SimpleDateFormat("EEE, d MMM yy HH:mm:ss z"),
-            new SimpleDateFormat("EEE, d MMM yy HH:mm z"),
-            new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss z"),
-            new SimpleDateFormat("EEE, d MMM yyyy HH:mm z"),
-            new SimpleDateFormat("d MMM yy HH:mm z"),
-            new SimpleDateFormat("d MMM yy HH:mm:ss z"),
-            new SimpleDateFormat("d MMM yyyy HH:mm z"),
-            new SimpleDateFormat("d MMM yyyy HH:mm:ss z")
+    public static final SimpleDateFormat DateFormat[] = new SimpleDateFormat[] {
+            new SimpleDateFormat("EEE, dd MMM yy HH:mm:ss Z", Locale.ENGLISH),
+            new SimpleDateFormat("EEE, d MMM yy HH:mm Z", Locale.ENGLISH),
+            new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.ENGLISH),
+            new SimpleDateFormat("EEE, d MMM yyyy HH:mm Z", Locale.ENGLISH),
+            new SimpleDateFormat("d MMM yy HH:mm Z", Locale.ENGLISH),
+            new SimpleDateFormat("d MMM yy HH:mm:ss Z", Locale.ENGLISH),
+            new SimpleDateFormat("d MMM yyyy HH:mm Z", Locale.ENGLISH),
+            new SimpleDateFormat("d MMM yyyy HH:mm:ss Z", Locale.ENGLISH),
+            new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.ENGLISH),
     };
 
-    public static Date parseRfc822DateString(String dateString) {
+    public static Date parseDateString(String dateString) {
         Date date = null;
-        for (SimpleDateFormat sdf : rfc822DateFormats) {
+        for (SimpleDateFormat sdf : DateFormat) {
             try {
                 date = sdf.parse(dateString);
             } catch (ParseException e) {
@@ -29,6 +30,7 @@ public class DateUtil {
                 return date;
             }
         }
+
         return null;
     }
 

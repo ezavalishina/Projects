@@ -13,8 +13,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.util.Date;
+
 import ru.focus.zavalishina.rssreader.R;
 import ru.focus.zavalishina.rssreader.model.ChannelInfo;
+import ru.focus.zavalishina.rssreader.model.DateUtil;
 import ru.focus.zavalishina.rssreader.view.ChannelListAdapter;
 import ru.focus.zavalishina.rssreader.view.ChannelLoaderService;
 import ru.focus.zavalishina.rssreader.view.DataAdapter;
@@ -55,6 +58,9 @@ public class NewsListActivity extends AppCompatActivity {
                 }
                 channelInfo = newChannelInfo;
                 recyclerView.setAdapter(new DataAdapter(context, channelInfo));
+
+//                Intent forChannelListIntent = MainActivity.createChannelInfoIntent(channelInfo);
+//                LocalBroadcastManager.getInstance(NewsListActivity.this).sendBroadcast(forChannelListIntent);
             }
         };
 
