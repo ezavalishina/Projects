@@ -13,16 +13,16 @@ import android.widget.TextView;
 import ru.focus.zavalishina.rssreader.R;
 import ru.focus.zavalishina.rssreader.model.structures.ItemInfo;
 
-public class NewsDescriptionActivity extends AppCompatActivity {
+public final class NewsDescriptionActivity extends AppCompatActivity {
     private static final String ITEM_INFO_INTENT = "ru.focus.zavalishina.rssreader.ITEM_INFO_INTENT";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_description_activity);
-        ItemInfo itemInfo = getItemInfo(getIntent());
-        TextView description = findViewById(R.id.description);
-        TextView title = findViewById(R.id.title);
+        final ItemInfo itemInfo = getItemInfo(getIntent());
+        final TextView description = findViewById(R.id.description);
+        final TextView title = findViewById(R.id.title);
 
         title.setText(itemInfo.getTitle());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -33,26 +33,26 @@ public class NewsDescriptionActivity extends AppCompatActivity {
 
         setTitle(R.string.news);
 
-        ActionBar actionBar = getSupportActionBar();
+        final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
 
-    public static void startWithItemInfo(Context context, ItemInfo itemInfo) {
-        Intent intent = new Intent(context, NewsDescriptionActivity.class);
+    public static void startWithItemInfo(final Context context, final ItemInfo itemInfo) {
+        final Intent intent = new Intent(context, NewsDescriptionActivity.class);
         intent.putExtra(ITEM_INFO_INTENT, itemInfo);
         context.startActivity(intent);
     }
 
-    static ItemInfo getItemInfo(Intent intent) {
+    static ItemInfo getItemInfo(final Intent intent) {
         return (ItemInfo) intent.getSerializableExtra(ITEM_INFO_INTENT);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        final int id = item.getItemId();
         switch(id){
             case android.R.id.home:
                 this.finish();

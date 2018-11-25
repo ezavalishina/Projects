@@ -1,4 +1,4 @@
-package ru.focus.zavalishina.rssreader.view.services;
+package ru.focus.zavalishina.rssreader.services;
 
 import android.app.IntentService;
 import android.content.Context;
@@ -9,11 +9,11 @@ import ru.focus.zavalishina.rssreader.model.structures.ChannelInfo;
 import ru.focus.zavalishina.rssreader.model.DataBaseHelper;
 import ru.focus.zavalishina.rssreader.view.activities.MainActivity;
 
-public final class ChannelDeleterService extends IntentService {
+public final class ChannelDeleteService extends IntentService {
     private static final String DELETER_CHANNEL_INFO_INTENT = "ru.focus.zavalishina.rssreader.DELETER_CHANNEL_INFO_INTENT";
 
-    public ChannelDeleterService() {
-        super("ChannelLoaderService");
+    public ChannelDeleteService() {
+        super("ChannelLoadService");
     }
 
     @Override
@@ -33,7 +33,7 @@ public final class ChannelDeleterService extends IntentService {
     }
 
     public static Intent createIntent(final Context context, final ChannelInfo channelInfo) {
-        final Intent intent = new Intent(context, ChannelDeleterService.class);
+        final Intent intent = new Intent(context, ChannelDeleteService.class);
         intent.putExtra(DELETER_CHANNEL_INFO_INTENT, channelInfo);
         return intent;
     }

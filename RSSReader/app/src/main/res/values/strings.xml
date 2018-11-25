@@ -12,6 +12,8 @@
     <string name="news">News</string>
     <string name="settings">Settings</string>
     <string name="auto_update">Auto update</string>
+    <string name="auto_update_key" translatable="false">AUTO_UPDATE</string>
+    <string name="auto_update_list_key" translatable="false">AUTO_UPDATE_PERIOD</string>
     <string name="update_period">Language</string>
     <integer name="items_number">100</integer>
     <string name="update_settings">Update settings</string>
@@ -24,7 +26,7 @@
     <string name="h12">12 h</string>
     <string name="h24">24 h</string>
 
-    <string name="val_m5">300000</string>
+    <string name="val_m5">300</string>
     <string name="val_m10">600000</string>
     <string name="val_m30">1800000</string>
     <string name="val_h1">3600000</string>

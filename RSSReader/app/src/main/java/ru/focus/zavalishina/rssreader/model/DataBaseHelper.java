@@ -41,12 +41,12 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
         private static final String AUTHOR = "author";
     }
 
-    public DataBaseHelper(Context context) {
+    public DataBaseHelper(final Context context) {
         super(context, DATABASE_NAME, null, SCHEMA);
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
+    public void onCreate(final SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + ChannelTable.NAME + "(" +
                 ChannelTable.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ChannelTable.TITLE + " TEXT, " +
@@ -70,49 +70,37 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + ChannelTable.NAME);
         db.execSQL("DROP TABLE IF EXISTS " + ItemTable.NAME);
         onCreate(db);
     }
 
-    public void insertItems(ChannelInfo channelInfo) throws IOException {
+    public void insertItems(final ChannelInfo channelInfo) throws IOException {
         try {
-            ArrayList<ItemInfo> items = channelInfo.getItems();
-            ArrayList<ItemInfo> oldItems = getItemInfos(channelInfo);
+            final ArrayList<ItemInfo> items = channelInfo.getItems();
+            final ArrayList<ItemInfo> oldItems = getItemInfos(channelInfo);
             ArrayList<ItemInfo> forInsert = new ArrayList<>();
-            boolean forInsertIsComplete = false;
 
             final int channelID = getChannelID(channelInfo);
 
             if (oldItems != null) {
-
-                for (int i = 0; i < items.size(); i++) {
-                    if (forInsertIsComplete) {
-                        break;
-                    }
-                    Date insertItemDate = DateUtil.parseDateString(items.get(i).getPubDate());
-                    for (int j = 0; j < oldItems.size(); j++) {
-                        Date dbItemDate = DateUtil.parseDateString(oldItems.get(j).getPubDate());
-                        if (dbItemDate != null && insertItemDate != null) {
-                            if (insertItemDate.after(dbItemDate)) {
-                                forInsert.add(items.get(i));
-                            } else {
-                                forInsertIsComplete = true;
-                                break;
-                            }
+                final Date dbItemDate = DateUtil.parseDateString(oldItems.get(oldItems.size() - 1).getPubDate());
+                for (int i = items.size() - 1; i >= 0; i--) {
+                    final Date insertItemDate = DateUtil.parseDateString(items.get(i).getPubDate());
+                    if (dbItemDate != null && insertItemDate != null) {
+                        if (insertItemDate.after(dbItemDate)) {
+                            forInsert.add(items.get(i));
                         } else {
-                            forInsertIsComplete = true;
                             break;
                         }
-
                     }
                 }
             } else {
                 forInsert = items;
             }
 
-            SQLiteDatabase database = getWritableDatabase();
+            final SQLiteDatabase database = getWritableDatabase();
             for (int i = 0; i < forInsert.size(); i++) {
                 database.insert(ItemTable.NAME, null,
                         getItemContentValues(forInsert.get(i), channelID));
@@ -125,31 +113,31 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void deleteChannel(ChannelInfo channelInfo) {
-        SQLiteDatabase database = getWritableDatabase();
+    public void deleteChannel(final ChannelInfo channelInfo) {
+        final SQLiteDatabase database = getWritableDatabase();
         final int channelID = getChannelID(channelInfo);
         database.delete(ChannelTable.NAME, ChannelTable.ID + "=" + channelID, null);
         database.delete(ItemTable.NAME, ItemTable.CHANNEL_ID + "=" + channelID, null);
         database.close();
     }
 
-    private void trimItems(SQLiteDatabase database, int channelID) {
-        String[] columns = new String[]{ItemTable.CHANNEL_ID, ItemTable.AUTHOR, ItemTable.ID,
+    private void trimItems(final SQLiteDatabase database, final int channelID) {
+        final String[] columns = new String[]{ItemTable.CHANNEL_ID, ItemTable.AUTHOR, ItemTable.ID,
                 ItemTable.PUB_DATE, ItemTable.DESCRIPTION, ItemTable.LINK, ItemTable.TITLE};
-        Cursor cursor = database.query(ItemTable.NAME, columns,
+        final Cursor cursor = database.query(ItemTable.NAME, columns,
                 ItemTable.CHANNEL_ID + "=" + String.valueOf(channelID),
                 null, null, null, null);
 
-        int cursorCount = cursor.getCount();
+        final int cursorCount = cursor.getCount();
         if (cursorCount == 0) {
             return;
         }
         if (cursorCount > ITEMS_NUMBER_IN_DB) {
-            int excess = cursorCount - ITEMS_NUMBER_IN_DB;
+            final int excess = cursorCount - ITEMS_NUMBER_IN_DB;
             cursor.moveToFirst();
 
             for (int i = 0; i < excess; i++) {
-                int id = cursor.getInt(cursor.getColumnIndex(ItemTable.ID));
+                final int id = cursor.getInt(cursor.getColumnIndex(ItemTable.ID));
                 database.delete(ItemTable.NAME, ItemTable.ID + "=" + id, null);
                 cursor.moveToNext();
             }
@@ -158,17 +146,17 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<ChannelInfo> getChannelInfos() {
-        String[] columns = new String[]{ChannelTable.TITLE, ChannelTable.URL, ChannelTable.LINK, ChannelTable.DESCRIPTION,
+        final String[] columns = new String[]{ChannelTable.TITLE, ChannelTable.URL, ChannelTable.LINK, ChannelTable.DESCRIPTION,
                 ChannelTable.LAST_BUILD_DATE, ChannelTable.LANGUAGE};
-        SQLiteDatabase database = getReadableDatabase();
-        Cursor cursor = database.query(ChannelTable.NAME, columns, null, null,
+        final SQLiteDatabase database = getReadableDatabase();
+        final Cursor cursor = database.query(ChannelTable.NAME, columns, null, null,
                 null, null, null);
 
         if (cursor.getCount() == 0) {
             return null;
         }
 
-        ArrayList<ChannelInfo> channelList = new ArrayList<>();
+        final ArrayList<ChannelInfo> channelList = new ArrayList<>();
 
         cursor.moveToNext();
         do {
@@ -190,22 +178,22 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
         return channelList;
     }
 
-    public ArrayList<ItemInfo> getItemInfos(ChannelInfo channelInfo) {
+    public ArrayList<ItemInfo> getItemInfos(final ChannelInfo channelInfo) {
         if (channelInfo == null) {
             return null;
         }
-        String[] columns = new String[]{ItemTable.CHANNEL_ID, ItemTable.AUTHOR, ItemTable.ID,
+        final String[] columns = new String[]{ItemTable.CHANNEL_ID, ItemTable.AUTHOR, ItemTable.ID,
                 ItemTable.PUB_DATE, ItemTable.DESCRIPTION, ItemTable.LINK, ItemTable.TITLE};
         final int channelID = getChannelID(channelInfo);
-        SQLiteDatabase database = getReadableDatabase();
-        Cursor cursor = database.query(ItemTable.NAME, columns, ItemTable.CHANNEL_ID + " = ?",
+        final SQLiteDatabase database = getReadableDatabase();
+        final Cursor cursor = database.query(ItemTable.NAME, columns, ItemTable.CHANNEL_ID + " = ?",
                 new String[]{String.valueOf(channelID)}, null, null, ItemTable.ID);
 
         if (cursor.getCount() == 0) {
             return null;
         }
 
-        ArrayList<ItemInfo> itemList = new ArrayList<>();
+        final ArrayList<ItemInfo> itemList = new ArrayList<>();
 
         cursor.moveToFirst();
 
@@ -226,9 +214,9 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
         return itemList;
     }
 
-    private int getChannelID(ChannelInfo channelInfo) {
-        SQLiteDatabase database = getReadableDatabase();
-        Cursor cursor = database.query(ChannelTable.NAME, new String[]{ChannelTable.ID},
+    private int getChannelID(final ChannelInfo channelInfo) {
+        final SQLiteDatabase database = getReadableDatabase();
+        final Cursor cursor = database.query(ChannelTable.NAME, new String[]{ChannelTable.ID},
                 ChannelTable.URL + " = ?", new String[]{channelInfo.getUrl()},
                 null, null, null);
         final int channelID;
@@ -246,9 +234,9 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
         return channelID;
     }
 
-    public boolean inDataBase(ChannelInfo channelInfo) {
-        SQLiteDatabase database = getReadableDatabase();
-        Cursor cursor = database.query(ChannelTable.NAME, new String[]{ChannelTable.ID},
+    public boolean inDataBase(final ChannelInfo channelInfo) {
+        final SQLiteDatabase database = getReadableDatabase();
+        final Cursor cursor = database.query(ChannelTable.NAME, new String[]{ChannelTable.ID},
                 ChannelTable.URL + " = ?", new String[]{channelInfo.getUrl()},
                 null, null, null);
 
@@ -262,8 +250,8 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    private ContentValues getChannelContentValues(ChannelInfo channelInfo) {
-        ContentValues channelContentValues = new ContentValues();
+    private ContentValues getChannelContentValues(final ChannelInfo channelInfo) {
+        final ContentValues channelContentValues = new ContentValues();
         channelContentValues.put(ChannelTable.TITLE, channelInfo.getTitle());
         channelContentValues.put(ChannelTable.LINK, channelInfo.getLink());
         channelContentValues.put(ChannelTable.DESCRIPTION, channelInfo.getDescription());
@@ -274,8 +262,8 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
         return channelContentValues;
     }
 
-    private ContentValues getItemContentValues(ItemInfo itemInfo, int channelID) {
-        ContentValues itemContentValues = new ContentValues();
+    private ContentValues getItemContentValues(final ItemInfo itemInfo, final int channelID) {
+        final ContentValues itemContentValues = new ContentValues();
         itemContentValues.put(ItemTable.CHANNEL_ID, channelID);
         itemContentValues.put(ItemTable.TITLE, itemInfo.getTitle());
         itemContentValues.put(ItemTable.LINK, itemInfo.getLink());

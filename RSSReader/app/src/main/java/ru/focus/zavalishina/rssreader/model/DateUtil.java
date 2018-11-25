@@ -18,7 +18,7 @@ public class DateUtil {
             new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.ENGLISH),
     };
 
-    public static Date parseDateString(String dateString) {
+    static Date parseDateString(String dateString) {
         Date date = null;
         for (SimpleDateFormat sdf : DateFormat) {
             try {

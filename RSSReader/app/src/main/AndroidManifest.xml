@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="ru.focus.zavalishina.rssreader">
 
@@ -29,16 +30,18 @@
         <activity android:name="ru.focus.zavalishina.rssreader.view.activities.NewsListActivity"/>
 
         <service
-            android:name="ru.focus.zavalishina.rssreader.view.services.NewsLoaderService"
+            android:name="ru.focus.zavalishina.rssreader.services.NewsLoadService"
             android:exported="false" />
 
         <service
-            android:name="ru.focus.zavalishina.rssreader.view.services.ChannelLoaderService"
+            android:name="ru.focus.zavalishina.rssreader.services.ChannelLoadService"
             android:exported="false" />
 
         <service
-            android:name="ru.focus.zavalishina.rssreader.view.services.ChannelDeleterService"
+            android:name="ru.focus.zavalishina.rssreader.services.ChannelDeleteService"
             android:exported="false" />
+
+        <service android:name=".services.NewsUpdateService"/>
     </application>
 
 </manifest>

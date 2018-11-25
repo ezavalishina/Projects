@@ -1,4 +1,4 @@
-package ru.focus.zavalishina.rssreader.view.services;
+package ru.focus.zavalishina.rssreader.services;
 
 import android.app.IntentService;
 import android.content.Context;
@@ -17,14 +17,14 @@ import ru.focus.zavalishina.rssreader.model.NewsLoader;
 import ru.focus.zavalishina.rssreader.view.activities.MainActivity;
 import ru.focus.zavalishina.rssreader.view.activities.NewsListActivity;
 
-public final class NewsLoaderService extends IntentService {
+public final class NewsLoadService extends IntentService {
 
-    public NewsLoaderService() {
-        super("NewsLoaderService");
+    public NewsLoadService() {
+        super("NewsLoadService");
     }
 
     @Override
-    protected void onHandleIntent(final Intent intent) {
+    public void onHandleIntent(final Intent intent) {
         if (intent == null) {
             return;
         }
@@ -65,7 +65,7 @@ public final class NewsLoaderService extends IntentService {
 
 
     public static Intent createIntent(final Context context, final String url) {
-        final Intent intent = new Intent(context, NewsLoaderService.class);
+        final Intent intent = new Intent(context, NewsLoadService.class);
         intent.putExtra(Intent.EXTRA_TEXT, url);
         return intent;
     }

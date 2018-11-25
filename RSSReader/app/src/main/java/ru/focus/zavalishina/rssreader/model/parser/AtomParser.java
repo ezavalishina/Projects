@@ -10,7 +10,7 @@ import java.util.Collections;
 import ru.focus.zavalishina.rssreader.model.structures.ChannelInfo;
 import ru.focus.zavalishina.rssreader.model.structures.ItemInfo;
 
-public final class AtomParser {
+final class AtomParser {
     ChannelInfo parse(final XmlPullParser xmlPullParser) {
         final ChannelInfo channel = new ChannelInfo();
         String tagName = null;

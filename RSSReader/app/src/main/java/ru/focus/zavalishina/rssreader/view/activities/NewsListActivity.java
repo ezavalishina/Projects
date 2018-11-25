@@ -16,9 +16,9 @@ import android.view.View;
 import ru.focus.zavalishina.rssreader.R;
 import ru.focus.zavalishina.rssreader.model.structures.ChannelInfo;
 import ru.focus.zavalishina.rssreader.view.adapters.NewsListAdapter;
-import ru.focus.zavalishina.rssreader.view.services.NewsLoaderService;
+import ru.focus.zavalishina.rssreader.services.NewsLoadService;
 
-public class NewsListActivity extends AppCompatActivity {
+public final class NewsListActivity extends AppCompatActivity {
     private static final String NEWS_LIST_INTENT = "ru.focus.zavalishina.rssreader.NEWS_LIST_INTENT";
     private static final String UPDATE_CHANNEL_INFO_BROADCAST = "ru.focus.zavalishina.rssreader.CHANNEL_INFO_BROADCAST";
     private static final String UPDATE_CHANNEL_INFO_INTENT = "ru.focus.zavalishina.rssreader.CHANNEL_INFO_INTENT";
@@ -27,7 +27,7 @@ public class NewsListActivity extends AppCompatActivity {
     private BroadcastReceiver broadcastReceiver;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_list);
         channelInfo = getChannelInfo(getIntent());
@@ -36,7 +36,7 @@ public class NewsListActivity extends AppCompatActivity {
         recyclerView.setAdapter(new NewsListAdapter(this, channelInfo));
         setTitle(channelInfo.getTitle());
 
-        ActionBar actionBar = getSupportActionBar();
+        final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -44,11 +44,11 @@ public class NewsListActivity extends AppCompatActivity {
 
         broadcastReceiver = new BroadcastReceiver() {
             @Override
-            public void onReceive(Context context, Intent intent) {
+            public void onReceive(final Context context, final Intent intent) {
                 if (intent == null) {
                     return;
                 }
-                ChannelInfo newChannelInfo = getUpdatedChannelInfo(intent);
+                final ChannelInfo newChannelInfo = getUpdatedChannelInfo(intent);
 
                 if (newChannelInfo == null) {
                     return;
@@ -58,19 +58,19 @@ public class NewsListActivity extends AppCompatActivity {
             }
         };
 
-        IntentFilter intentFilter = new IntentFilter(UPDATE_CHANNEL_INFO_BROADCAST);
+        final IntentFilter intentFilter = new IntentFilter(UPDATE_CHANNEL_INFO_BROADCAST);
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
 
 
     }
 
-    public void updateItems(View view) {
-        Intent intent = NewsLoaderService.createIntent(this, channelInfo.getUrl());
+    public void updateItems(final View view) {
+        final Intent intent = NewsLoadService.createIntent(this, channelInfo.getUrl());
         startService(intent);
     }
 
-    public static Intent createUpdateChannelInfoIntent(ChannelInfo channelInfo) {
-        Intent intent = new Intent(UPDATE_CHANNEL_INFO_BROADCAST);
+    public static Intent createUpdateChannelInfoIntent(final ChannelInfo channelInfo) {
+        final Intent intent = new Intent(UPDATE_CHANNEL_INFO_BROADCAST);
         intent.putExtra(UPDATE_CHANNEL_INFO_INTENT, channelInfo);
         return intent;
     }
@@ -81,27 +81,27 @@ public class NewsListActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
     }
 
-    public static void startWithChannelInfo(Context context, ChannelInfo channelInfo) {
-        Intent intent = new Intent(context, NewsListActivity.class);
+    public static void startWithChannelInfo(final Context context, final ChannelInfo channelInfo) {
+        final Intent intent = new Intent(context, NewsListActivity.class);
         intent.putExtra(NEWS_LIST_INTENT, channelInfo);
         context.startActivity(intent);
     }
 
-    static ChannelInfo getUpdatedChannelInfo(Intent intent) {
+    static ChannelInfo getUpdatedChannelInfo(final Intent intent) {
         return (ChannelInfo) intent.getSerializableExtra(UPDATE_CHANNEL_INFO_INTENT);
     }
 
-    static ChannelInfo getChannelInfo(Intent intent) {
+    static ChannelInfo getChannelInfo(final Intent intent) {
         return (ChannelInfo) intent.getSerializableExtra(NEWS_LIST_INTENT);
     }
 
-    public final boolean onCreateOptionsMenu(Menu menu) {
+    public final boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         int id = item.getItemId();
         switch(id){
             case R.id.menu_settings :

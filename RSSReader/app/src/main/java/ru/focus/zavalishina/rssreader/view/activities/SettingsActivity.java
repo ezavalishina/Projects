@@ -7,7 +7,7 @@ import ru.focus.zavalishina.rssreader.R;
 
 public final class SettingsActivity extends PreferenceActivity {
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.pref);
     }

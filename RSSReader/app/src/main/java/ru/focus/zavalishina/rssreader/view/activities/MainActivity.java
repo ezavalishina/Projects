@@ -1,7 +1,9 @@
 package ru.focus.zavalishina.rssreader.view.activities;
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -33,9 +35,10 @@ import java.util.ArrayList;
 
 import ru.focus.zavalishina.rssreader.R;
 import ru.focus.zavalishina.rssreader.model.structures.ChannelInfo;
+import ru.focus.zavalishina.rssreader.services.ChannelLoadService;
+import ru.focus.zavalishina.rssreader.services.NewsLoadService;
+import ru.focus.zavalishina.rssreader.services.NewsUpdateService;
 import ru.focus.zavalishina.rssreader.view.adapters.ChannelListAdapter;
-import ru.focus.zavalishina.rssreader.view.services.ChannelLoaderService;
-import ru.focus.zavalishina.rssreader.view.services.NewsLoaderService;
 
 
 public final class MainActivity extends AppCompatActivity {
@@ -52,27 +55,27 @@ public final class MainActivity extends AppCompatActivity {
     private BroadcastReceiver dbBroadcastReceiver;
     private BroadcastReceiver deleteChannelBroadcastReceiver;
     private SharedPreferences sharedPreferences;
+    private final ArrayList<ChannelInfo> channelInfos = new ArrayList<>();
     private String savedUrl = null;
 
     @Override
     protected final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final ArrayList<ChannelInfo> channelInfos = new ArrayList<>();
         final RecyclerView recyclerView = findViewById(R.id.news_list);
 
         internetBroadcastReceiver = new BroadcastReceiver() {
             @Override
-            public void onReceive(Context context, Intent intent) {
+            public void onReceive(final Context context, final Intent intent) {
                 if (intent == null) {
                     return;
                 }
-                ChannelInfo channelInfo = getChannelInfo(intent);
+                final ChannelInfo channelInfo = getChannelInfo(intent);
 
                 if (channelInfo == null) {
                     return;
                 }
-                int channelIndex = findChannelInfoIndex(channelInfo, channelInfos);
+                final int channelIndex = findChannelInfoIndex(channelInfo, channelInfos);
                 if (channelIndex != -1) {
                     channelInfos.remove(channelIndex);
                     channelInfos.add(channelIndex, channelInfo);
@@ -85,7 +88,7 @@ public final class MainActivity extends AppCompatActivity {
 
         dbBroadcastReceiver = new BroadcastReceiver() {
             @Override
-            public void onReceive(Context context, Intent intent) {
+            public void onReceive(final Context context, final Intent intent) {
                 if (intent == null) {
                     return;
                 }
@@ -97,12 +100,12 @@ public final class MainActivity extends AppCompatActivity {
 
         deleteChannelBroadcastReceiver = new BroadcastReceiver() {
             @Override
-            public void onReceive(Context context, Intent intent) {
+            public void onReceive(final Context context, final Intent intent) {
                 if (intent == null) {
                     return;
                 }
 
-                int channelIndex = findChannelInfoIndex(getDeleteChannelInfo(intent), channelInfos);
+                final int channelIndex = findChannelInfoIndex(getDeleteChannelInfo(intent), channelInfos);
                 if (channelIndex != -1) {
                     channelInfos.remove(channelIndex);
 
@@ -111,15 +114,15 @@ public final class MainActivity extends AppCompatActivity {
             }
         };
 
-        IntentFilter dbIntentFilter = new IntentFilter(ARRAY_CHANNEL_INFO_BROADCAST);
+        final IntentFilter dbIntentFilter = new IntentFilter(ARRAY_CHANNEL_INFO_BROADCAST);
         LocalBroadcastManager.getInstance(this).registerReceiver(dbBroadcastReceiver, dbIntentFilter);
-        Intent intent = ChannelLoaderService.createIntent(this);
+        final Intent intent = ChannelLoadService.createIntent(this);
         startService(intent);
 
-        IntentFilter intentFilter = new IntentFilter(CHANNEL_INFO_BROADCAST);
+        final IntentFilter intentFilter = new IntentFilter(CHANNEL_INFO_BROADCAST);
         LocalBroadcastManager.getInstance(this).registerReceiver(internetBroadcastReceiver, intentFilter);
 
-        IntentFilter deleteChannelIntentFilter = new IntentFilter(DELETE_CHANNEL_INFO_BROADCAST);
+        final IntentFilter deleteChannelIntentFilter = new IntentFilter(DELETE_CHANNEL_INFO_BROADCAST);
         LocalBroadcastManager.getInstance(this).registerReceiver(deleteChannelBroadcastReceiver, deleteChannelIntentFilter);
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -131,15 +134,39 @@ public final class MainActivity extends AppCompatActivity {
             editor.apply();
         }
 
-        boolean dialogOpened = sharedPreferences.getBoolean(DIALOG_OPENED, false);
+        final boolean dialogOpened = sharedPreferences.getBoolean(DIALOG_OPENED, false);
 
         if (dialogOpened) {
             addChannel(null);
         }
-
     }
 
-    private int findChannelInfoIndex(ChannelInfo channelInfo, ArrayList<ChannelInfo> channelInfos) {
+//    private void setAutoUpdate(final int updatePeriod) {
+//        final AlarmManager manager = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
+//        if(manager == null){
+//            return;
+//        }
+//        final Intent updateIntent = NewsUpdateService.createAutoUpdateIntent(this, channelInfos);
+//        final long updateTime = updatePeriod + System.currentTimeMillis();
+//        final PendingIntent pendingIntent = PendingIntent.getService(this,
+//                0, updateIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+//        manager.set(AlarmManager.RTC_WAKEUP, updateTime, pendingIntent);
+//    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        boolean autoUpdate = sharedPreferences.getBoolean(getString(R.string.auto_update_key), false);
+//        if (autoUpdate) {
+//            String updatePeriodString = sharedPreferences.getString(getString(R.string.auto_update_list_key), getString(R.string.val_h24));
+//            if (updatePeriodString != null) {
+//                int updatePeriod = Integer.valueOf(updatePeriodString);
+//                setAutoUpdate(updatePeriod);
+//            }
+//        }
+    }
+
+    private int findChannelInfoIndex(final ChannelInfo channelInfo, final ArrayList<ChannelInfo> channelInfos) {
         for (int i = 0; i < channelInfos.size(); i++) {
             if (channelInfos.get(i).getUrl().equals(channelInfo.getUrl())) {
                 return i;
@@ -149,7 +176,7 @@ public final class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         if (savedUrl != null) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -167,37 +194,37 @@ public final class MainActivity extends AppCompatActivity {
 
     }
 
-    static ChannelInfo getChannelInfo(Intent intent) {
+    static ChannelInfo getChannelInfo(final Intent intent) {
         return (ChannelInfo) intent.getSerializableExtra(CHANNEL_INFO_INTENT);
     }
 
-    public static Intent createChannelInfoIntent(ChannelInfo channelInfo) {
+    public static Intent createChannelInfoIntent(final ChannelInfo channelInfo) {
         Intent intent = new Intent(CHANNEL_INFO_BROADCAST);
         intent.putExtra(CHANNEL_INFO_INTENT, channelInfo);
         return intent;
     }
 
-    public static Intent createArrayChannelInfoIntent(ArrayList<ChannelInfo> channelInfos) {
+    public static Intent createArrayChannelInfoIntent(final ArrayList<ChannelInfo> channelInfos) {
         final Intent intent = new Intent(ARRAY_CHANNEL_INFO_BROADCAST);
         intent.putExtra(ARRAY_CHANNEL_INFO_INTENT, channelInfos);
         return intent;
     }
 
-    static ArrayList<ChannelInfo> getArrayChannelInfo(Intent intent) {
+    static ArrayList<ChannelInfo> getArrayChannelInfo(final Intent intent) {
         return (ArrayList<ChannelInfo>) intent.getSerializableExtra(ARRAY_CHANNEL_INFO_INTENT);
     }
 
-    static ChannelInfo getDeleteChannelInfo(Intent intent) {
+    static ChannelInfo getDeleteChannelInfo(final Intent intent) {
         return (ChannelInfo) intent.getSerializableExtra(DELETE_CHANNEL_INFO_INTENT);
     }
 
-    public static Intent createDeleteChannelInfoIntent(ChannelInfo channelInfo) {
+    public static Intent createDeleteChannelInfoIntent(final ChannelInfo channelInfo) {
         Intent intent = new Intent(DELETE_CHANNEL_INFO_BROADCAST);
         intent.putExtra(DELETE_CHANNEL_INFO_INTENT, channelInfo);
         return intent;
     }
 
-    public final void addChannel(View view) {
+    public final void addChannel(final View view) {
         final ViewGroup viewGroup = null;
         final AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setCancelable(false)
@@ -217,7 +244,7 @@ public final class MainActivity extends AppCompatActivity {
                 final SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean(DIALOG_OPENED, true);
                 editor.apply();
-                String editionUrl = sharedPreferences.getString(DIALOG_URL, "");
+                final String editionUrl = sharedPreferences.getString(DIALOG_URL, "");
                 final EditText editText = alertDialog.findViewById(R.id.edit_text_dialog_url);
                 final TextInputLayout textInputLayout = alertDialog.findViewById(R.id.text_input_layout_adding_channel);
                 editText.setText(editionUrl);
@@ -244,7 +271,7 @@ public final class MainActivity extends AppCompatActivity {
                         final String url = editText.getText().toString();
 
                         if (URLUtil.isValidUrl(url)) {
-                            Intent intent = NewsLoaderService.createIntent(context, url);
+                            final Intent intent = NewsLoadService.createIntent(context, url);
                             if (ContextCompat.checkSelfPermission(context, Manifest.permission.INTERNET)
                                     != PackageManager.PERMISSION_GRANTED) {
 
@@ -285,7 +312,7 @@ public final class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(final int requestCode, final @NonNull String[] permissions, final @NonNull int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_INTERNET: {
                 if (grantResults.length > 0
@@ -300,14 +327,14 @@ public final class MainActivity extends AppCompatActivity {
         }
     }
 
-    public final boolean onCreateOptionsMenu(Menu menu) {
+    public final boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        final int id = item.getItemId();
         switch (id) {
             case R.id.menu_settings:
                 startActivity(new Intent(this, SettingsActivity.class));

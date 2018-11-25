@@ -1,4 +1,4 @@
-package ru.focus.zavalishina.rssreader.view.services;
+package ru.focus.zavalishina.rssreader.services;
 
 import android.app.IntentService;
 import android.content.Context;
@@ -11,14 +11,14 @@ import ru.focus.zavalishina.rssreader.model.structures.ChannelInfo;
 import ru.focus.zavalishina.rssreader.model.DataBaseHelper;
 import ru.focus.zavalishina.rssreader.view.activities.MainActivity;
 
-public final class ChannelLoaderService extends IntentService {
+public final class ChannelLoadService extends IntentService {
 
-    public ChannelLoaderService() {
-        super("ChannelLoaderService");
+    public ChannelLoadService() {
+        super("ChannelLoadService");
     }
 
     @Override
-    protected void onHandleIntent(final Intent intent) {
+    public void onHandleIntent(final Intent intent) {
         final DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
         final ArrayList<ChannelInfo> channelInfos = dataBaseHelper.getChannelInfos();
 
@@ -29,6 +29,6 @@ public final class ChannelLoaderService extends IntentService {
     }
 
     public static Intent createIntent(final Context context) {
-        return new Intent(context, ChannelLoaderService.class);
+        return new Intent(context, ChannelLoadService.class);
     }
 }

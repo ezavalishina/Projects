@@ -8,14 +8,14 @@
         android:title="@string/update_settings">
 
         <CheckBoxPreference
-            android:key="auto_update"
+            android:key="@string/auto_update_key"
             android:title="@string/auto_update">
         </CheckBoxPreference>
 
         <ListPreference
             android:entries="@array/update_time"
             android:entryValues="@array/update_time_ms"
-            android:key="auto_update_list"
+            android:key="@string/auto_update_list_key"
             android:title="@string/update_period"
             android:defaultValue="@string/val_h24">
         </ListPreference>

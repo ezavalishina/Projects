@@ -15,11 +15,11 @@ import java.util.ArrayList;
 import ru.focus.zavalishina.rssreader.R;
 import ru.focus.zavalishina.rssreader.model.structures.ChannelInfo;
 import ru.focus.zavalishina.rssreader.view.activities.NewsListActivity;
-import ru.focus.zavalishina.rssreader.view.services.ChannelDeleterService;
+import ru.focus.zavalishina.rssreader.services.ChannelDeleteService;
 
-public class ChannelListAdapter extends RecyclerView.Adapter {
-    private ArrayList<ChannelInfo> channelInfos;
-    private LayoutInflater inflater;
+public final class ChannelListAdapter extends RecyclerView.Adapter {
+    private final ArrayList<ChannelInfo> channelInfos;
+    private final LayoutInflater inflater;
 
     public ChannelListAdapter(final Context context, final ArrayList<ChannelInfo> channelInfos) {
         this.channelInfos = channelInfos;
@@ -67,7 +67,7 @@ public class ChannelListAdapter extends RecyclerView.Adapter {
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = ChannelDeleterService.createIntent(v.getContext(), channelInfo);
+                    Intent intent = ChannelDeleteService.createIntent(v.getContext(), channelInfo);
                     v.getContext().startService(intent);
                 }
             });
