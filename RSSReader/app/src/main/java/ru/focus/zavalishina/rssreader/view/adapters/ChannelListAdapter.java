@@ -67,7 +67,7 @@ public final class ChannelListAdapter extends RecyclerView.Adapter {
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = ChannelDeleteService.createIntent(v.getContext(), channelInfo);
+                    final Intent intent = ChannelDeleteService.createIntent(v.getContext(), channelInfo);
                     v.getContext().startService(intent);
                 }
             });

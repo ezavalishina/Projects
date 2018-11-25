@@ -17,43 +17,43 @@
     <string name="update_period">Language</string>
     <integer name="items_number">100</integer>
     <string name="update_settings">Update settings</string>
-    <string name="m5">5 min</string>
-    <string name="m10">10 min</string>
-    <string name="m30">30 min</string>
-    <string name="h1">1 h</string>
-    <string name="h2">2 h</string>
-    <string name="h6">6 h</string>
-    <string name="h12">12 h</string>
-    <string name="h24">24 h</string>
+    <string name="min_5">5 min</string>
+    <string name="min_10">10 min</string>
+    <string name="min_30">30 min</string>
+    <string name="h_1">1 h</string>
+    <string name="h_2">2 h</string>
+    <string name="h_6">6 h</string>
+    <string name="h_12">12 h</string>
+    <string name="h_24">24 h</string>
 
-    <string name="val_m5">300</string>
-    <string name="val_m10">600000</string>
-    <string name="val_m30">1800000</string>
-    <string name="val_h1">3600000</string>
-    <string name="val_h2">7200000</string>
-    <string name="val_h6">21600000</string>
-    <string name="val_h12">43200000</string>
-    <string name="val_h24">86400000</string>
+    <string name="val_min_5">300</string>
+    <string name="val_min_10">600000</string>
+    <string name="val_min_30">1800000</string>
+    <string name="val_h_1">3600000</string>
+    <string name="val_h_2">7200000</string>
+    <string name="val_h_6">21600000</string>
+    <string name="val_h_12">43200000</string>
+    <string name="val_h_24">86400000</string>
 
     <string-array name="update_time">
-        <item>@string/m5</item>
-        <item>@string/m10</item>
-        <item>@string/m30</item>
-        <item>@string/h1</item>
-        <item>@string/h2</item>
-        <item>@string/h6</item>
-        <item>@string/h12</item>
-        <item>@string/h24</item>
+        <item>@string/min_5</item>
+        <item>@string/min_10</item>
+        <item>@string/min_30</item>
+        <item>@string/h_1</item>
+        <item>@string/h_2</item>
+        <item>@string/h_6</item>
+        <item>@string/h_12</item>
+        <item>@string/h_24</item>
     </string-array>
 
     <string-array name="update_time_ms">
-        <item>@string/val_m5</item>
-        <item>@string/val_m10</item>
-        <item>@string/val_m30</item>
-        <item>@string/val_h1</item>
-        <item>@string/val_h2</item>
-        <item>@string/val_h6</item>
-        <item>@string/val_h12</item>
-        <item>@string/val_h24</item>
+        <item>@string/val_min_5</item>
+        <item>@string/val_min_10</item>
+        <item>@string/val_min_30</item>
+        <item>@string/val_h_1</item>
+        <item>@string/val_h_2</item>
+        <item>@string/val_h_6</item>
+        <item>@string/val_h_12</item>
+        <item>@string/val_h_24</item>
     </string-array>
 </resources>

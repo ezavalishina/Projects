@@ -1,11 +1,11 @@
-package ru.focus.zavalishina.rssreader.model;
+package ru.focus.zavalishina.rssreader.model.database;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class DateUtil {
+public final class DateUtil {
     private static final SimpleDateFormat DateFormat[] = new SimpleDateFormat[] {
             new SimpleDateFormat("EEE, dd MMM yy HH:mm:ss Z", Locale.ENGLISH),
             new SimpleDateFormat("EEE, d MMM yy HH:mm Z", Locale.ENGLISH),

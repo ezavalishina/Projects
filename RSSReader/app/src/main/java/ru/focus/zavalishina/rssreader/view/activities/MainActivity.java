@@ -1,9 +1,7 @@
 package ru.focus.zavalishina.rssreader.view.activities;
 
 import android.Manifest;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -37,7 +35,6 @@ import ru.focus.zavalishina.rssreader.R;
 import ru.focus.zavalishina.rssreader.model.structures.ChannelInfo;
 import ru.focus.zavalishina.rssreader.services.ChannelLoadService;
 import ru.focus.zavalishina.rssreader.services.NewsLoadService;
-import ru.focus.zavalishina.rssreader.services.NewsUpdateService;
 import ru.focus.zavalishina.rssreader.view.adapters.ChannelListAdapter;
 
 
@@ -45,18 +42,25 @@ public final class MainActivity extends AppCompatActivity {
     private static final String CHANNEL_INFO_INTENT = "ru.focus.zavalishina.rssreader.CHANNEL_INFO_INTENT";
     private static final String DELETE_CHANNEL_INFO_INTENT = "ru.focus.zavalishina.rssreader.DELETE_CHANNEL_INFO_INTENT";
     private static final String ARRAY_CHANNEL_INFO_INTENT = "ru.focus.zavalishina.rssreader.ARRAY_CHANNEL_INFO_INTENT";
+
     private static final String CHANNEL_INFO_BROADCAST = "ru.focus.zavalishina.rssreader.CHANNEL_INFO_BROADCAST";
     private static final String DELETE_CHANNEL_INFO_BROADCAST = "ru.focus.zavalishina.rssreader.DELETE_CHANNEL_INFO_BROADCAST";
     private static final String ARRAY_CHANNEL_INFO_BROADCAST = "ru.focus.zavalishina.rssreader.ARRAY_CHANNEL_INFO_BROADCAST";
+
     private static final String DIALOG_OPENED = "ru.focus.zavalishina.rssreader.DIALOG_OPENED";
     private static final String DIALOG_URL = "ru.focus.zavalishina.rssreader.DIALOG_URL";
+
     private static final int MY_PERMISSIONS_REQUEST_INTERNET = 223313232;
+
     private BroadcastReceiver internetBroadcastReceiver;
     private BroadcastReceiver dbBroadcastReceiver;
     private BroadcastReceiver deleteChannelBroadcastReceiver;
     private SharedPreferences sharedPreferences;
+
     private final ArrayList<ChannelInfo> channelInfos = new ArrayList<>();
+
     private String savedUrl = null;
+
 
     @Override
     protected final void onCreate(Bundle savedInstanceState) {
@@ -141,32 +145,8 @@ public final class MainActivity extends AppCompatActivity {
         }
     }
 
-//    private void setAutoUpdate(final int updatePeriod) {
-//        final AlarmManager manager = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
-//        if(manager == null){
-//            return;
-//        }
-//        final Intent updateIntent = NewsUpdateService.createAutoUpdateIntent(this, channelInfos);
-//        final long updateTime = updatePeriod + System.currentTimeMillis();
-//        final PendingIntent pendingIntent = PendingIntent.getService(this,
-//                0, updateIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-//        manager.set(AlarmManager.RTC_WAKEUP, updateTime, pendingIntent);
-//    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        boolean autoUpdate = sharedPreferences.getBoolean(getString(R.string.auto_update_key), false);
-//        if (autoUpdate) {
-//            String updatePeriodString = sharedPreferences.getString(getString(R.string.auto_update_list_key), getString(R.string.val_h24));
-//            if (updatePeriodString != null) {
-//                int updatePeriod = Integer.valueOf(updatePeriodString);
-//                setAutoUpdate(updatePeriod);
-//            }
-//        }
-    }
-
-    private int findChannelInfoIndex(final ChannelInfo channelInfo, final ArrayList<ChannelInfo> channelInfos) {
+    private int findChannelInfoIndex(final @NonNull ChannelInfo channelInfo, final @NonNull ArrayList<ChannelInfo> channelInfos) {
         for (int i = 0; i < channelInfos.size(); i++) {
             if (channelInfos.get(i).getUrl().equals(channelInfo.getUrl())) {
                 return i;
@@ -194,31 +174,31 @@ public final class MainActivity extends AppCompatActivity {
 
     }
 
-    static ChannelInfo getChannelInfo(final Intent intent) {
+    static ChannelInfo getChannelInfo(final @NonNull Intent intent) {
         return (ChannelInfo) intent.getSerializableExtra(CHANNEL_INFO_INTENT);
     }
 
-    public static Intent createChannelInfoIntent(final ChannelInfo channelInfo) {
-        Intent intent = new Intent(CHANNEL_INFO_BROADCAST);
+    public static Intent createChannelInfoIntent(final @NonNull ChannelInfo channelInfo) {
+        final Intent intent = new Intent(CHANNEL_INFO_BROADCAST);
         intent.putExtra(CHANNEL_INFO_INTENT, channelInfo);
         return intent;
     }
 
-    public static Intent createArrayChannelInfoIntent(final ArrayList<ChannelInfo> channelInfos) {
+    public static Intent createArrayChannelInfoIntent(final @NonNull ArrayList<ChannelInfo> channelInfos) {
         final Intent intent = new Intent(ARRAY_CHANNEL_INFO_BROADCAST);
         intent.putExtra(ARRAY_CHANNEL_INFO_INTENT, channelInfos);
         return intent;
     }
 
-    static ArrayList<ChannelInfo> getArrayChannelInfo(final Intent intent) {
+    static ArrayList<ChannelInfo> getArrayChannelInfo(@NonNull final Intent intent) {
         return (ArrayList<ChannelInfo>) intent.getSerializableExtra(ARRAY_CHANNEL_INFO_INTENT);
     }
 
-    static ChannelInfo getDeleteChannelInfo(final Intent intent) {
+    static ChannelInfo getDeleteChannelInfo(@NonNull final Intent intent) {
         return (ChannelInfo) intent.getSerializableExtra(DELETE_CHANNEL_INFO_INTENT);
     }
 
-    public static Intent createDeleteChannelInfoIntent(final ChannelInfo channelInfo) {
+    public static Intent createDeleteChannelInfoIntent(final @NonNull ChannelInfo channelInfo) {
         Intent intent = new Intent(DELETE_CHANNEL_INFO_BROADCAST);
         intent.putExtra(DELETE_CHANNEL_INFO_INTENT, channelInfo);
         return intent;
@@ -236,7 +216,7 @@ public final class MainActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private DialogInterface.OnShowListener createShowListener(final Context context, final AlertDialog alertDialog) {
+    private DialogInterface.OnShowListener createShowListener(final Context context, final @NonNull AlertDialog alertDialog) {
         return new DialogInterface.OnShowListener() {
 
             @Override

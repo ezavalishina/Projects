@@ -22,6 +22,26 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="site.org"
+                    android:pathPrefix="/something"
+                    android:scheme="http" />
+                <data
+                    android:host="*.site.org"
+                    android:scheme="http" />
+                <data
+                    android:host="www.site.org"
+                    android:pathPrefix="/something"
+                    android:scheme="http" />
+                <data
+                    android:scheme="rss" />
+                <data
+                    android:scheme="atom" />
             </intent-filter>
         </activity>
         <activity android:name="ru.focus.zavalishina.rssreader.view.activities.SettingsActivity" />
@@ -30,18 +50,14 @@
         <activity android:name="ru.focus.zavalishina.rssreader.view.activities.NewsListActivity"/>
 
         <service
-            android:name="ru.focus.zavalishina.rssreader.services.NewsLoadService"
-            android:exported="false" />
+            android:name="ru.focus.zavalishina.rssreader.services.NewsLoadService"/>
 
         <service
-            android:name="ru.focus.zavalishina.rssreader.services.ChannelLoadService"
-            android:exported="false" />
+            android:name="ru.focus.zavalishina.rssreader.services.ChannelLoadService"/>
 
         <service
-            android:name="ru.focus.zavalishina.rssreader.services.ChannelDeleteService"
-            android:exported="false" />
+            android:name="ru.focus.zavalishina.rssreader.services.ChannelDeleteService"/>
 
-        <service android:name=".services.NewsUpdateService"/>
     </application>
 
 </manifest>

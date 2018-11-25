@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
@@ -40,13 +41,13 @@ public final class NewsDescriptionActivity extends AppCompatActivity {
         }
     }
 
-    public static void startWithItemInfo(final Context context, final ItemInfo itemInfo) {
+    public static void startWithItemInfo(final @NonNull Context context, final @NonNull ItemInfo itemInfo) {
         final Intent intent = new Intent(context, NewsDescriptionActivity.class);
         intent.putExtra(ITEM_INFO_INTENT, itemInfo);
         context.startActivity(intent);
     }
 
-    static ItemInfo getItemInfo(final Intent intent) {
+    static ItemInfo getItemInfo(final @NonNull Intent intent) {
         return (ItemInfo) intent.getSerializableExtra(ITEM_INFO_INTENT);
     }
 

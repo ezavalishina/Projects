@@ -17,7 +17,7 @@
             android:entryValues="@array/update_time_ms"
             android:key="@string/auto_update_list_key"
             android:title="@string/update_period"
-            android:defaultValue="@string/val_h24">
+            android:defaultValue="@string/val_h_24">
         </ListPreference>
     </PreferenceCategory>
 

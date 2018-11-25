@@ -3,15 +3,15 @@ package ru.focus.zavalishina.rssreader.services;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
 import ru.focus.zavalishina.rssreader.model.structures.ChannelInfo;
-import ru.focus.zavalishina.rssreader.model.DataBaseHelper;
+import ru.focus.zavalishina.rssreader.model.database.DataBaseHelper;
 import ru.focus.zavalishina.rssreader.model.structures.ItemInfo;
 import ru.focus.zavalishina.rssreader.model.NewsLoader;
 import ru.focus.zavalishina.rssreader.view.activities.MainActivity;
@@ -43,12 +43,8 @@ public final class NewsLoadService extends IntentService {
             DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
             channelInfo.setUrl(urlString);
 
-            boolean inDataBase = dataBaseHelper.inDataBase(channelInfo);
-            try {
-                dataBaseHelper.insertItems(channelInfo);
-            } catch (IOException ex) {
-                return;
-            }
+            boolean inDataBase = dataBaseHelper.containChannel(channelInfo);
+            dataBaseHelper.insertItems(channelInfo);
 
             if (!inDataBase) {
                 final Intent newsIntent = MainActivity.createChannelInfoIntent(channelInfo);
@@ -63,8 +59,7 @@ public final class NewsLoadService extends IntentService {
     }
 
 
-
-    public static Intent createIntent(final Context context, final String url) {
+    public static Intent createIntent(final Context context, final @NonNull String url) {
         final Intent intent = new Intent(context, NewsLoadService.class);
         intent.putExtra(Intent.EXTRA_TEXT, url);
         return intent;

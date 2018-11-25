@@ -8,7 +8,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import java.util.ArrayList;
 
 import ru.focus.zavalishina.rssreader.model.structures.ChannelInfo;
-import ru.focus.zavalishina.rssreader.model.DataBaseHelper;
+import ru.focus.zavalishina.rssreader.model.database.DataBaseHelper;
 import ru.focus.zavalishina.rssreader.view.activities.MainActivity;
 
 public final class ChannelLoadService extends IntentService {

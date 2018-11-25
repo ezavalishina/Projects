@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import ru.focus.zavalishina.rssreader.model.structures.ChannelInfo;
-import ru.focus.zavalishina.rssreader.model.DateUtil;
 import ru.focus.zavalishina.rssreader.model.structures.ItemInfo;
 
 final class RSSParser {
@@ -74,7 +73,6 @@ final class RSSParser {
         final ItemInfo item = new ItemInfo();
         String tagName = null;
         int currentEvent;
-        DateUtil dateUtil = new DateUtil();
 
         try {
             currentEvent = xmlPullParser.getEventType();
