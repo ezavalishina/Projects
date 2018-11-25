@@ -1,14 +1,14 @@
 package ru.focus.zavalishina.rssreader.model;
 
-import android.content.Context;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
+
+import ru.focus.zavalishina.rssreader.model.parser.NewsParser;
+import ru.focus.zavalishina.rssreader.model.structures.ChannelInfo;
 
 public final class NewsLoader {
 

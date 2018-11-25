@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">RssReader</string>
+    <string name="add">Добавить</string>
+    <string name="edit_url">Введите URL канала</string>
+    <string name="menu_settings">Настройки</string>
+    <string name="menu_about">О приложении</string>
+    <string name="about_message">RSS-читалка для Focus Start</string>
+    <string name="permission_message">Разрешите доступ к Интернету</string>
+    <string name="cancel">Отмена</string>
+    <string name="url_error">Некорректный URL</string>
+    <string name="your_channels">Ваши каналы</string>
+    <string name="news">Новость</string>
+    <string name="settings">Настройки</string>
+    <string name="auto_update">Автообновление</string>
+    <string name="update_period">Период автообновления</string>
+    <integer name="items_number">100</integer>
+    <string name="update_settings">Настройки обновления</string>
+    <string name="m5">5 мин</string>
+    <string name="m10">10 мин</string>
+    <string name="m30">30 мин</string>
+    <string name="h1">1 ч</string>
+    <string name="h2">2 ч</string>
+    <string name="h6">6 ч</string>
+    <string name="h12">12 ч</string>
+    <string name="h24">24 ч</string>
+    <string name="val_m5">300000</string>
+    <string name="val_m10">600000</string>
+    <string name="val_m30">1800000</string>
+    <string name="val_h1">3600000</string>
+    <string name="val_h2">7200000</string>
+    <string name="val_h6">21600000</string>
+    <string name="val_h12">43200000</string>
+    <string name="val_h24">86400000</string>
+
+    <string-array name="update_time">
+        <item>@string/m5</item>
+        <item>@string/m10</item>
+        <item>@string/m30</item>
+        <item>@string/h1</item>
+        <item>@string/h2</item>
+        <item>@string/h6</item>
+        <item>@string/h12</item>
+        <item>@string/h24</item>
+    </string-array>
+
+    <string-array name="update_time_ms">
+        <item>@string/val_m5</item>
+        <item>@string/val_m10</item>
+        <item>@string/val_m30</item>
+        <item>@string/val_h1</item>
+        <item>@string/val_h2</item>
+        <item>@string/val_h6</item>
+        <item>@string/val_h12</item>
+        <item>@string/val_h24</item>
+    </string-array>
+
+</resources>

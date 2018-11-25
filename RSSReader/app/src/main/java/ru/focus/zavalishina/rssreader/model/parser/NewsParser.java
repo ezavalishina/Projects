@@ -1,4 +1,4 @@
-package ru.focus.zavalishina.rssreader.model;
+package ru.focus.zavalishina.rssreader.model.parser;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -7,8 +7,10 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.io.Reader;
 
-final class NewsParser {
-    final ChannelInfo parse(final Reader reader) {
+import ru.focus.zavalishina.rssreader.model.structures.ChannelInfo;
+
+public final class NewsParser {
+    public final ChannelInfo parse(final Reader reader) {
         try {
             final XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             final XmlPullParser xmlPullParser = factory.newPullParser();

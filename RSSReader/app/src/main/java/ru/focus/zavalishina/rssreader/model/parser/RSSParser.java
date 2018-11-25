@@ -1,4 +1,4 @@
-package ru.focus.zavalishina.rssreader.model;
+package ru.focus.zavalishina.rssreader.model.parser;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -7,7 +7,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public final class AtomParser {
+import ru.focus.zavalishina.rssreader.model.structures.ChannelInfo;
+import ru.focus.zavalishina.rssreader.model.DateUtil;
+import ru.focus.zavalishina.rssreader.model.structures.ItemInfo;
+
+final class RSSParser {
     ChannelInfo parse(final XmlPullParser xmlPullParser) {
         final ChannelInfo channel = new ChannelInfo();
         String tagName = null;
@@ -27,12 +31,18 @@ public final class AtomParser {
                             channel.setTitle(xmlPullParser.getText());
                             break;
                         case "link":
-                            channel.setTitle(xmlPullParser.getText());
+                            channel.setLink(xmlPullParser.getText());
                             break;
-                        case "updated":
+                        case "description":
+                            channel.setDescription(xmlPullParser.getText());
+                            break;
+                        case "lastBuildDate":
                             channel.setLastBuildDate(xmlPullParser.getText());
                             break;
-                        case "entry":
+                        case "language":
+                            channel.setLanguage(xmlPullParser.getText());
+                            break;
+                        case "item":
                             ItemInfo item = parseItem(xmlPullParser);
                             if (item != null) {
                                 channel.addItem(item);
@@ -64,10 +74,11 @@ public final class AtomParser {
         final ItemInfo item = new ItemInfo();
         String tagName = null;
         int currentEvent;
+        DateUtil dateUtil = new DateUtil();
 
         try {
             currentEvent = xmlPullParser.getEventType();
-            while (!("entry".equals(xmlPullParser.getName()) && XmlPullParser.END_TAG == currentEvent)) {
+            while (!("item".equals(xmlPullParser.getName()) && XmlPullParser.END_TAG == currentEvent)) {
 
                 if (XmlPullParser.START_TAG == currentEvent) {
                     tagName = xmlPullParser.getName();
@@ -78,11 +89,17 @@ public final class AtomParser {
                         case "title":
                             item.setTitle(xmlPullParser.getText());
                             break;
-                        case "summary":
+                        case "link":
+                            item.setLink(xmlPullParser.getText());
+                            break;
+                        case "description":
                             item.setDescription(xmlPullParser.getText());
                             break;
-                        case "updated":
+                        case "pubDate":
                             item.setPubDate(xmlPullParser.getText());
+                            break;
+                        case "author":
+                            item.setAuthor(xmlPullParser.getText());
                             break;
 
                         default:

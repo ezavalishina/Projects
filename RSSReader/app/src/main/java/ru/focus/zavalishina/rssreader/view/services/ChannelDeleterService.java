@@ -1,11 +1,11 @@
-package ru.focus.zavalishina.rssreader.view;
+package ru.focus.zavalishina.rssreader.view.services;
 
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
-import ru.focus.zavalishina.rssreader.model.ChannelInfo;
+import ru.focus.zavalishina.rssreader.model.structures.ChannelInfo;
 import ru.focus.zavalishina.rssreader.model.DataBaseHelper;
 import ru.focus.zavalishina.rssreader.view.activities.MainActivity;
 

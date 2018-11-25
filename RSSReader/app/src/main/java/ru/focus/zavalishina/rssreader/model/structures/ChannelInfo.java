@@ -1,6 +1,5 @@
-package ru.focus.zavalishina.rssreader.model;
+package ru.focus.zavalishina.rssreader.model.structures;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public final class ChannelInfo implements java.io.Serializable {

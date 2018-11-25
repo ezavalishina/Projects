@@ -1,4 +1,4 @@
-package ru.focus.zavalishina.rssreader.view;
+package ru.focus.zavalishina.rssreader.view.services;
 
 import android.app.IntentService;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import java.util.ArrayList;
 
-import ru.focus.zavalishina.rssreader.model.ChannelInfo;
+import ru.focus.zavalishina.rssreader.model.structures.ChannelInfo;
 import ru.focus.zavalishina.rssreader.model.DataBaseHelper;
 import ru.focus.zavalishina.rssreader.view.activities.MainActivity;
 
@@ -29,7 +29,6 @@ public final class ChannelLoaderService extends IntentService {
     }
 
     public static Intent createIntent(final Context context) {
-        final Intent intent = new Intent(context, ChannelLoaderService.class);
-        return intent;
+        return new Intent(context, ChannelLoaderService.class);
     }
 }

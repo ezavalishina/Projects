@@ -1,4 +1,4 @@
-package ru.focus.zavalishina.rssreader.view;
+package ru.focus.zavalishina.rssreader.view.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,8 +13,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ru.focus.zavalishina.rssreader.R;
-import ru.focus.zavalishina.rssreader.model.ChannelInfo;
+import ru.focus.zavalishina.rssreader.model.structures.ChannelInfo;
 import ru.focus.zavalishina.rssreader.view.activities.NewsListActivity;
+import ru.focus.zavalishina.rssreader.view.services.ChannelDeleterService;
 
 public class ChannelListAdapter extends RecyclerView.Adapter {
     private ArrayList<ChannelInfo> channelInfos;

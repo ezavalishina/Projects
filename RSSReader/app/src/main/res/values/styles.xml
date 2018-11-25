@@ -6,17 +6,88 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="Toolbar">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">?attr/actionBarSize</item>
-        <item name="android:background">@color/colorPrimary</item>
+    <style name="AddingChannel">
+        <item name="android:background">@android:color/white</item>
     </style>
 
-    <style name="AddChannel">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
+    <style name="AddChannelText">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:layout_margin">10dp</item>
-        <item name="android:orientation">vertical</item>
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="PositiveButton">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
+
+    <style name="NegativeButton">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
+
+    <style name="YourChannels">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_margin">10dp</item>
+    </style>
+
+    <style name="AddChannelButton">
+        <item name="android:layout_margin">@dimen/fab_margin</item>
+        <item name="android:tint">@color/colorAccentContrast</item>
+    </style>
+
+    <style name="UpdateButton">
+        <item name="android:layout_margin">@dimen/fab_margin</item>
+        <item name="android:tint">@color/colorAccentContrast</item>
+    </style>
+
+    <style name="ChannelNameTextView">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="DeleteChannelButton">
+        <item name="android:tint">@color/colorPrimaryDark</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+    </style>
+
+    <style name="NewsDescriptionLL">
+        <item name="android:layout_margin">10dp</item>
+    </style>
+
+    <style name="NewsDescriptionTitle">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="NewsDescription">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="NewsItemAuthorTextView">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="NewsItemTitleTextView">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="NewsItemDateTextView">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
     <style name="MainPanel">

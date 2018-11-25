@@ -1,4 +1,4 @@
-package ru.focus.zavalishina.rssreader.view;
+package ru.focus.zavalishina.rssreader.view.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,15 +9,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import ru.focus.zavalishina.rssreader.R;
-import ru.focus.zavalishina.rssreader.model.ChannelInfo;
-import ru.focus.zavalishina.rssreader.model.ItemInfo;
+import ru.focus.zavalishina.rssreader.model.structures.ChannelInfo;
+import ru.focus.zavalishina.rssreader.model.structures.ItemInfo;
 import ru.focus.zavalishina.rssreader.view.activities.NewsDescriptionActivity;
 
-public final class DataAdapter extends RecyclerView.Adapter {
+public final class NewsListAdapter extends RecyclerView.Adapter {
     private ChannelInfo channelInfo;
     private LayoutInflater inflater;
 
-    public DataAdapter(final Context context, final ChannelInfo channelInfo) {
+    public NewsListAdapter(final Context context, final ChannelInfo channelInfo) {
         this.channelInfo = channelInfo;
         this.inflater = LayoutInflater.from(context);
     }
@@ -25,7 +25,7 @@ public final class DataAdapter extends RecyclerView.Adapter {
 
     @NonNull
     @Override
-    public DataAdapter.ViewHolder onCreateViewHolder(@NonNull final ViewGroup viewGroup, final int i) {
+    public NewsListAdapter.ViewHolder onCreateViewHolder(@NonNull final ViewGroup viewGroup, final int i) {
         final View view = inflater.inflate(R.layout.news_item, viewGroup, false);
         return new ViewHolder(view);
     }
@@ -47,7 +47,7 @@ public final class DataAdapter extends RecyclerView.Adapter {
         private ViewHolder(final View view) {
             super(view);
             authorTextView = view.findViewById(R.id.author_text_view);
-            dataTextView = view.findViewById(R.id.data_text_view);
+            dataTextView = view.findViewById(R.id.date_text_view);
             titleTextView = view.findViewById(R.id.title_text_view);
         }
 

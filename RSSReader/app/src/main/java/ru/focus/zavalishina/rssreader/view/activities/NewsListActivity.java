@@ -13,15 +13,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import java.util.Date;
-
 import ru.focus.zavalishina.rssreader.R;
-import ru.focus.zavalishina.rssreader.model.ChannelInfo;
-import ru.focus.zavalishina.rssreader.model.DateUtil;
-import ru.focus.zavalishina.rssreader.view.ChannelListAdapter;
-import ru.focus.zavalishina.rssreader.view.ChannelLoaderService;
-import ru.focus.zavalishina.rssreader.view.DataAdapter;
-import ru.focus.zavalishina.rssreader.view.NewsLoaderService;
+import ru.focus.zavalishina.rssreader.model.structures.ChannelInfo;
+import ru.focus.zavalishina.rssreader.view.adapters.NewsListAdapter;
+import ru.focus.zavalishina.rssreader.view.services.NewsLoaderService;
 
 public class NewsListActivity extends AppCompatActivity {
     private static final String NEWS_LIST_INTENT = "ru.focus.zavalishina.rssreader.NEWS_LIST_INTENT";
@@ -38,12 +33,14 @@ public class NewsListActivity extends AppCompatActivity {
         channelInfo = getChannelInfo(getIntent());
 
         recyclerView = findViewById(R.id.news_list);
-        recyclerView.setAdapter(new DataAdapter(this, channelInfo));
+        recyclerView.setAdapter(new NewsListAdapter(this, channelInfo));
         setTitle(channelInfo.getTitle());
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         broadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -57,10 +54,7 @@ public class NewsListActivity extends AppCompatActivity {
                     return;
                 }
                 channelInfo = newChannelInfo;
-                recyclerView.setAdapter(new DataAdapter(context, channelInfo));
-
-//                Intent forChannelListIntent = MainActivity.createChannelInfoIntent(channelInfo);
-//                LocalBroadcastManager.getInstance(NewsListActivity.this).sendBroadcast(forChannelListIntent);
+                recyclerView.setAdapter(new NewsListAdapter(context, channelInfo));
             }
         };
 
@@ -115,9 +109,6 @@ public class NewsListActivity extends AppCompatActivity {
                 return true;
             case R.id.menu_about:
                 startActivity(new Intent(this, AboutActivity.class));
-                return true;
-            case R.id.menu_favorite:
-                startActivity(new Intent(this, FavoriteActivity.class));
                 return true;
             case android.R.id.home:
                 this.finish();

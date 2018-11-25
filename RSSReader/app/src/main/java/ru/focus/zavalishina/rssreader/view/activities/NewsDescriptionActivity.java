@@ -3,16 +3,15 @@ package ru.focus.zavalishina.rssreader.view.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Html;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import ru.focus.zavalishina.rssreader.R;
-import ru.focus.zavalishina.rssreader.model.ItemInfo;
+import ru.focus.zavalishina.rssreader.model.structures.ItemInfo;
 
 public class NewsDescriptionActivity extends AppCompatActivity {
     private static final String ITEM_INFO_INTENT = "ru.focus.zavalishina.rssreader.ITEM_INFO_INTENT";
@@ -35,8 +34,10 @@ public class NewsDescriptionActivity extends AppCompatActivity {
         setTitle(R.string.news);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     public static void startWithItemInfo(Context context, ItemInfo itemInfo) {

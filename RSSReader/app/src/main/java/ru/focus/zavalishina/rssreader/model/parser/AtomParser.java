@@ -1,4 +1,4 @@
-package ru.focus.zavalishina.rssreader.model;
+package ru.focus.zavalishina.rssreader.model.parser;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -7,7 +7,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-final class RSSParser {
+import ru.focus.zavalishina.rssreader.model.structures.ChannelInfo;
+import ru.focus.zavalishina.rssreader.model.structures.ItemInfo;
+
+public final class AtomParser {
     ChannelInfo parse(final XmlPullParser xmlPullParser) {
         final ChannelInfo channel = new ChannelInfo();
         String tagName = null;
@@ -27,18 +30,12 @@ final class RSSParser {
                             channel.setTitle(xmlPullParser.getText());
                             break;
                         case "link":
-                            channel.setLink(xmlPullParser.getText());
+                            channel.setTitle(xmlPullParser.getText());
                             break;
-                        case "description":
-                            channel.setDescription(xmlPullParser.getText());
-                            break;
-                        case "lastBuildDate":
+                        case "updated":
                             channel.setLastBuildDate(xmlPullParser.getText());
                             break;
-                        case "language":
-                            channel.setLanguage(xmlPullParser.getText());
-                            break;
-                        case "item":
+                        case "entry":
                             ItemInfo item = parseItem(xmlPullParser);
                             if (item != null) {
                                 channel.addItem(item);
@@ -70,11 +67,10 @@ final class RSSParser {
         final ItemInfo item = new ItemInfo();
         String tagName = null;
         int currentEvent;
-        DateUtil dateUtil = new DateUtil();
 
         try {
             currentEvent = xmlPullParser.getEventType();
-            while (!("item".equals(xmlPullParser.getName()) && XmlPullParser.END_TAG == currentEvent)) {
+            while (!("entry".equals(xmlPullParser.getName()) && XmlPullParser.END_TAG == currentEvent)) {
 
                 if (XmlPullParser.START_TAG == currentEvent) {
                     tagName = xmlPullParser.getName();
@@ -85,17 +81,11 @@ final class RSSParser {
                         case "title":
                             item.setTitle(xmlPullParser.getText());
                             break;
-                        case "link":
-                            item.setLink(xmlPullParser.getText());
-                            break;
-                        case "description":
+                        case "summary":
                             item.setDescription(xmlPullParser.getText());
                             break;
-                        case "pubDate":
+                        case "updated":
                             item.setPubDate(xmlPullParser.getText());
-                            break;
-                        case "author":
-                            item.setAuthor(xmlPullParser.getText());
                             break;
 
                         default:

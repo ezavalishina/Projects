@@ -10,7 +10,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
@@ -31,14 +30,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import ru.focus.zavalishina.rssreader.R;
-import ru.focus.zavalishina.rssreader.model.ChannelInfo;
-import ru.focus.zavalishina.rssreader.model.DateUtil;
-import ru.focus.zavalishina.rssreader.view.ChannelListAdapter;
-import ru.focus.zavalishina.rssreader.view.ChannelLoaderService;
-import ru.focus.zavalishina.rssreader.view.NewsLoaderService;
+import ru.focus.zavalishina.rssreader.model.structures.ChannelInfo;
+import ru.focus.zavalishina.rssreader.view.adapters.ChannelListAdapter;
+import ru.focus.zavalishina.rssreader.view.services.ChannelLoaderService;
+import ru.focus.zavalishina.rssreader.view.services.NewsLoaderService;
 
 
 public final class MainActivity extends AppCompatActivity {
@@ -51,7 +48,7 @@ public final class MainActivity extends AppCompatActivity {
     private static final String DIALOG_OPENED = "ru.focus.zavalishina.rssreader.DIALOG_OPENED";
     private static final String DIALOG_URL = "ru.focus.zavalishina.rssreader.DIALOG_URL";
     private static final int MY_PERMISSIONS_REQUEST_INTERNET = 223313232;
-    private BroadcastReceiver broadcastReceiver;
+    private BroadcastReceiver internetBroadcastReceiver;
     private BroadcastReceiver dbBroadcastReceiver;
     private BroadcastReceiver deleteChannelBroadcastReceiver;
     private SharedPreferences sharedPreferences;
@@ -64,7 +61,7 @@ public final class MainActivity extends AppCompatActivity {
         final ArrayList<ChannelInfo> channelInfos = new ArrayList<>();
         final RecyclerView recyclerView = findViewById(R.id.news_list);
 
-        broadcastReceiver = new BroadcastReceiver() {
+        internetBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent == null) {
@@ -120,7 +117,7 @@ public final class MainActivity extends AppCompatActivity {
         startService(intent);
 
         IntentFilter intentFilter = new IntentFilter(CHANNEL_INFO_BROADCAST);
-        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
+        LocalBroadcastManager.getInstance(this).registerReceiver(internetBroadcastReceiver, intentFilter);
 
         IntentFilter deleteChannelIntentFilter = new IntentFilter(DELETE_CHANNEL_INFO_BROADCAST);
         LocalBroadcastManager.getInstance(this).registerReceiver(deleteChannelBroadcastReceiver, deleteChannelIntentFilter);
@@ -164,7 +161,7 @@ public final class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(internetBroadcastReceiver);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(dbBroadcastReceiver);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(deleteChannelBroadcastReceiver);
 
@@ -317,9 +314,6 @@ public final class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.menu_about:
                 startActivity(new Intent(this, AboutActivity.class));
-                return true;
-            case R.id.menu_favorite:
-                startActivity(new Intent(this, FavoriteActivity.class));
                 return true;
         }
         return super.onOptionsItemSelected(item);

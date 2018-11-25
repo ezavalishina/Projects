@@ -1,4 +1,4 @@
-package ru.focus.zavalishina.rssreader.model;
+package ru.focus.zavalishina.rssreader.model.structures;
 
 import java.io.Serializable;
 
