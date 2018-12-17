@@ -14,9 +14,13 @@
     <string name="auto_update">Auto update</string>
     <string name="auto_update_key" translatable="false">AUTO_UPDATE</string>
     <string name="auto_update_list_key" translatable="false">AUTO_UPDATE_PERIOD</string>
-    <string name="update_period">Language</string>
+    <string name="auto_update_broadcast" translatable="false">AUTO_UPDATE_BROADCAST</string>
+    <string name="auto_update_intent" translatable="false">AUTO_UPDATE_INTENT</string>
+    <string name="update_period">Update period</string>
     <integer name="items_number">100</integer>
     <string name="update_settings">Update settings</string>
+    <string name="open_in_browser">Open in browser</string>
+
     <string name="min_5">5 min</string>
     <string name="min_10">10 min</string>
     <string name="min_30">30 min</string>

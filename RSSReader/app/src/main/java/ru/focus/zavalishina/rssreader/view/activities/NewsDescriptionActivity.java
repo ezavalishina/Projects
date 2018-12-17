@@ -2,6 +2,7 @@ package ru.focus.zavalishina.rssreader.view.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import ru.focus.zavalishina.rssreader.R;
@@ -16,12 +18,13 @@ import ru.focus.zavalishina.rssreader.model.structures.ItemInfo;
 
 public final class NewsDescriptionActivity extends AppCompatActivity {
     private static final String ITEM_INFO_INTENT = "ru.focus.zavalishina.rssreader.ITEM_INFO_INTENT";
+    private static ItemInfo itemInfo;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_description_activity);
-        final ItemInfo itemInfo = getItemInfo(getIntent());
+        itemInfo = getItemInfo(getIntent());
         final TextView description = findViewById(R.id.description);
         final TextView title = findViewById(R.id.title);
 
@@ -38,6 +41,14 @@ public final class NewsDescriptionActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    public void openInBrowser(View view) {
+        String link = itemInfo.getLink();
+        if (!"".equals(link)) {
+            final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(itemInfo.getLink()));
+            startActivity(intent);
         }
     }
 

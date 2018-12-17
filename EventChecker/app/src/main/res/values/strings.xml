@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">EventChecker</string>
+    <string name="picture">Picture</string>
+    <string name="guest_name_title">Имя</string>
+    <string name="guest_last_name_title">Фамилия</string>
+    <string name="guest_patronymic_title">Отчество</string>
+    <string name="guest_email_title">email</string>
+    <string name="guest_phone_title">Телефон</string>
+    <string name="guest_sity_title">Город</string>
+    <string name="guest_company_title">ВУЗ</string>
+    <string name="guest_position_title">Факультет</string>
+    <string name="guest_speciality_title">Специальность</string>
+    <string name="guest_year_of_issue_title">Год выпуска</string>
+    <string name="guest_registered_date_title">Заказ оформлен</string>
+    <string name="guest_paid_title">Оплачено</string>
+    <string name="statistics_registered_guests">Зарегистрировано</string>
+    <string name="statistics_marked_guests">Отмечено</string>
+</resources>

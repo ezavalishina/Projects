@@ -57,8 +57,6 @@ public final class MainActivity extends AppCompatActivity {
     private BroadcastReceiver deleteChannelBroadcastReceiver;
     private SharedPreferences sharedPreferences;
 
-    private final ArrayList<ChannelInfo> channelInfos = new ArrayList<>();
-
     private String savedUrl = null;
 
 
@@ -67,6 +65,7 @@ public final class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final RecyclerView recyclerView = findViewById(R.id.news_list);
+        final ArrayList<ChannelInfo> channelInfos = new ArrayList<>();
 
         internetBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -143,8 +142,18 @@ public final class MainActivity extends AppCompatActivity {
         if (dialogOpened) {
             addChannel(null);
         }
-    }
 
+        String url = getIntent().getDataString();
+        final String action = intent.getAction();
+
+        if (Intent.ACTION_VIEW.equals(action) && url != null) {
+            final SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(DIALOG_URL, url);
+            editor.putBoolean(DIALOG_OPENED, true);
+            editor.apply();
+            addChannel(null);
+        }
+    }
 
     private int findChannelInfoIndex(final @NonNull ChannelInfo channelInfo, final @NonNull ArrayList<ChannelInfo> channelInfos) {
         for (int i = 0; i < channelInfos.size(); i++) {

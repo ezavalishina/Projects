@@ -15,6 +15,8 @@
     <string name="update_period">Период автообновления</string>
     <integer name="items_number">100</integer>
     <string name="update_settings">Настройки обновления</string>
+    <string name="open_in_browser">Открыть в браузере</string>
+
     <string name="min_5">5 мин</string>
     <string name="min_10">10 мин</string>
     <string name="min_30">30 мин</string>

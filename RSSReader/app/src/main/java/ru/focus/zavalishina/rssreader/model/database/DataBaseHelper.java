@@ -69,9 +69,7 @@ public final class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + ChannelTable.NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + ItemTable.NAME);
-        onCreate(db);
+
     }
 
     public void insertItems(final ChannelInfo channelInfo) {
