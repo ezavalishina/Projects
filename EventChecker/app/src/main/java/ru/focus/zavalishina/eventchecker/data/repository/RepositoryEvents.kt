@@ -5,6 +5,7 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import ru.focus.zavalishina.eventchecker.domain.Repository
 import ru.focus.zavalishina.eventchecker.data.dataBase.AppDatabase
+import ru.focus.zavalishina.eventchecker.data.dataBase.entities.EventEntity
 import ru.focus.zavalishina.eventchecker.domain.model.Event
 import ru.focus.zavalishina.eventchecker.domain.model.Guest
 import ru.focus.zavalishina.eventchecker.data.web.WebDataSource
@@ -15,10 +16,9 @@ class RepositoryEvents(context: Context) : Repository {
     private val eventDao = AppDatabase.getInstance(context).eventDao()
 
     override fun getEvents(): Single<List<Event>> {
+        val haveEvents = eventDao.getCountEvents() != 0
 
-        val haveAnkets = eventDao.getCountEvents() != 0
-
-        return if (haveAnkets) {
+        return if (haveEvents) {
             Single.just(eventDao.getAllEvents()).map { RepositoryConverter.toEventsListFromEntity(it) }
         } else {
             return getActualEvents()

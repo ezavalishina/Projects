@@ -3,7 +3,7 @@ package ru.focus.zavalishina.eventchecker.domain
 import android.content.Context
 import ru.focus.zavalishina.eventchecker.domain.model.Guest
 
-class Interrupter(context: Context){
+class Iteractor(context: Context){
     private val repository = RepositoryFactory.create(context)
 
     fun getEvents() = repository.getEvents()

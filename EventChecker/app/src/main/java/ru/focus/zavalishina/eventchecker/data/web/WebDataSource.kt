@@ -2,7 +2,7 @@ package ru.focus.zavalishina.eventchecker.data.web
 
 import ru.focus.zavalishina.eventchecker.data.web.model.ConfirmationBody
 
-class WebDataSource() {
+class WebDataSource {
     private val api: Api
 
     init {

@@ -8,8 +8,8 @@ class EventListPresenter(private val activity: Activity) {
     private var events = listOf<PresentationEvent>()
 
     fun getEvents() {
-        val intent = EventListActivity.createIntentLoaderEventsService(activity)
-        activity.startService(intent)
+        //val intent = EventListActivity.createIntentLoaderEventsService(activity)
+        //activity.startService(intent)
     }
 
     fun setEvents(events: List<PresentationEvent>) {
