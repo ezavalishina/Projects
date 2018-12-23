@@ -34,14 +34,14 @@ public final class MD2 {
     };
 
     public static void main(String[] args) throws IOException {
-        String folder = "2";
+        final String folder = "2";
         message = Files.readAllBytes(Paths.get(folder, "picture.jpg"));
 
         calculate();
 
         System.out.print("HASH: ");
         for (int i = 0; i < 16; i++) {
-            BigInteger bigInteger = new BigInteger(Integer.toString(X[i]));
+            final BigInteger bigInteger = new BigInteger(Integer.toString(X[i]));
             System.out.print(bigInteger.toString(16));
         }
     }
@@ -54,23 +54,23 @@ public final class MD2 {
 
     private static void addBits() {
         if ((message.length % 16) != 0) {
-            int a = (16 - message.length % 16);
-            byte[] array = new byte[a];
+            final int a = (16 - message.length % 16);
+            final byte[] array = new byte[a];
             Arrays.fill(array, (byte) a);
             message = concatenate(message, array);
         } else {
-            byte[] array = new byte[16];
+            final byte[] array = new byte[16];
             Arrays.fill(array, (byte) 16);
             message = concatenate(message, array);
         }
     }
 
     private static void addCheckSum() {
-        int[] C = new int[16];
+        final int[] C = new int[16];
         int L = 0;
         int c;
         for (int i = 0; i < message.length / 16; i++) {
-            byte[] array = readBlock(message);
+            final byte[] array = readBlock(message);
             for (int j = 0; j < 16; j++) {
                 c = array[j] & 0xFF;
                 C[j] = (S[c ^ L] ^ C[j]);
@@ -99,27 +99,27 @@ public final class MD2 {
         }
     }
 
-    private static byte[] readBlock(byte[] message) {
-        byte[] block = Arrays.copyOfRange(message, POS, POS + 16);
+    private static byte[] readBlock(final byte[] message) {
+        final byte[] block = Arrays.copyOfRange(message, POS, POS + 16);
         POS += 16;
 
         return block;
     }
 
-    private static byte[] writeBlock(byte[] message, int[] checkSum) {
-        byte[] byteCheckSum = new byte[16];
+    private static byte[] writeBlock(final byte[] message, final int[] checkSum) {
+        final byte[] byteCheckSum = new byte[16];
         for (int i = 0; i < 16; i++) {
             byteCheckSum[i] = (byte) checkSum[i];
         }
         return concatenate(message, byteCheckSum);
     }
 
-    private static byte[] concatenate(byte[] a, byte[] b) {
-        int aLen = a.length;
-        int bLen = b.length;
+    private static byte[] concatenate(final byte[] a, final byte[] b) {
+        final int aLen = a.length;
+        final int bLen = b.length;
 
         @SuppressWarnings("unchecked")
-        byte[] c = (byte[]) Array.newInstance(a.getClass().getComponentType(), aLen + bLen);
+        final byte[] c = (byte[]) Array.newInstance(a.getClass().getComponentType(), aLen + bLen);
         System.arraycopy(a, 0, c, 0, aLen);
         System.arraycopy(b, 0, c, aLen, bLen);
 

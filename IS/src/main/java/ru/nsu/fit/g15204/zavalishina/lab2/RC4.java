@@ -11,13 +11,13 @@ public final class RC4 {
     public static void main(String[] args) throws IOException {
         String folder = "2";
 
-        byte[] toEncrypt = Files.readAllBytes(Paths.get(folder, "picture.jpg"));
-        byte[] key = Files.readAllBytes(Paths.get(folder, "key"));
+        final byte[] toEncrypt = Files.readAllBytes(Paths.get(folder, "picture.jpg"));
+        final byte[] key = Files.readAllBytes(Paths.get(folder, "key"));
 
         Files.write(Paths.get(folder, "encrypted"),
                 PRGAcrypt(key, toEncrypt));
 
-        byte[] toDecrypt = Files.readAllBytes(Paths.get(folder, "encrypted"));
+        final byte[] toDecrypt = Files.readAllBytes(Paths.get(folder, "encrypted"));
 
         Files.write(Paths.get(folder, "decrypted"),
                 PRGAcrypt(key, toDecrypt));
@@ -32,7 +32,7 @@ public final class RC4 {
             i = (i + 1) & 0xFF;
             j = (j + S[i]) & 0xFF;
             swap(i, j);
-            int t = (S[i] + S[j]) & 0xFF;
+            final int t = (S[i] + S[j]) & 0xFF;
             message[k] ^= S[t];
         }
         return message;

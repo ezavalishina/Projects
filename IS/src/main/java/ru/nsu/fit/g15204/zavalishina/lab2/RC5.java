@@ -15,21 +15,21 @@ public final class RC5 {
     private static int c;
 
     public static void main(String[] args) throws IOException {
-        String folder = "2";
+        final String folder = "2";
 
-        byte[] key = Files.readAllBytes(Paths.get(folder, "key"));
+        final byte[] key = Files.readAllBytes(Paths.get(folder, "key"));
         init(key);
 
         byte[] bytesToEncrypt = Files.readAllBytes(Paths.get(folder, "picture.jpg"));
         bytesToEncrypt = Arrays.copyOf(bytesToEncrypt, bytesToEncrypt.length + 15);
-        long[] toEncrypt = new long[bytesToEncrypt.length / 16 * 2];
-        DataInputStream dataInputStream = new DataInputStream(new ByteArrayInputStream(bytesToEncrypt));
+        final long[] toEncrypt = new long[bytesToEncrypt.length / 16 * 2];
+        final DataInputStream dataInputStream = new DataInputStream(new ByteArrayInputStream(bytesToEncrypt));
         for (int i = 0; i < toEncrypt.length; i++) {
             toEncrypt[i] = dataInputStream.readLong();
         }
         dataInputStream.close();
 
-        long[] toDecrypt = encrypt(toEncrypt);
+        final long[] toDecrypt = encrypt(toEncrypt);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(toDecrypt.length * 8);
         DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
         for (int i = 0; i < toDecrypt.length; i++) {
@@ -37,7 +37,7 @@ public final class RC5 {
         }
         Files.write(Paths.get(folder, "encrypted"),byteArrayOutputStream.toByteArray());
 
-        long[] decrypted = decrypt(toDecrypt);
+        final long[] decrypted = decrypt(toDecrypt);
         byteArrayOutputStream = new ByteArrayOutputStream(decrypted.length * 8);
         dataOutputStream = new DataOutputStream(byteArrayOutputStream);
         for (int i = 0; i < decrypted.length; i++) {
@@ -45,15 +45,17 @@ public final class RC5 {
         }
         Files.write(Paths.get(folder, "decrypted"),byteArrayOutputStream.toByteArray());
 
+        dataOutputStream.close();
+        byteArrayOutputStream.close();
     }
 
-    private static void init(byte[] key) {
+    private static void init(final byte[] key) {
         keySplitting(key);
         tableConstruction();
         mixing();
     }
 
-    private static long[] encrypt(long[] message) {
+    private static long[] encrypt(final long[] message) {
         for (int i = 0; i < message.length / 2; i++) {
             long A = message[i * 2] + S[0];
             long B = message[i * 2 + 1] + S[1];
@@ -67,7 +69,7 @@ public final class RC5 {
         return message;
     }
 
-    private static long[] decrypt(long[] message) {
+    private static long[] decrypt(final long[] message) {
         for (int i = 0; i < message.length / 2; i++) {
             long A = message[i * 2];
             long B = message[i * 2 + 1];
@@ -81,8 +83,8 @@ public final class RC5 {
         return message;
     }
 
-    private static void keySplitting(byte[] key) {
-        int b = key.length;
+    private static void keySplitting(final byte[] key) {
+        final int b = key.length;
 
         c = (b + 7) / (W / 8);
         L = new long[c];
