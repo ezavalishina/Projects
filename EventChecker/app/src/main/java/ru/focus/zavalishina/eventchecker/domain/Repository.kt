@@ -6,7 +6,7 @@ import ru.focus.zavalishina.eventchecker.domain.model.Guest
 
 interface Repository {
     fun getEvents(): Single<List<Event>>
-    fun getActualEvents(): Single<List<Event>>
+    fun getActualEvents(): List<Event>
     fun sendConfirmations(eventId: Int, guests: List<Guest>)
     fun getCountGuests(): Int
     fun resendConfirmations()
